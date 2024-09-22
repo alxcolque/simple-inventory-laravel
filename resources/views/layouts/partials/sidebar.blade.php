@@ -8,12 +8,12 @@
       <div class="profile-desc">
         <div class="profile-pic">
           <div class="count-indicator">
-            <img class="img-xs rounded-circle " src="assets/images/faces/face15.jpg" alt="">
+            <img class="img-xs rounded-circle " src="{{ Auth::user()->avatar }}" alt="">
             <span class="count bg-success"></span>
           </div>
           <div class="profile-name">
             <h5 class="mb-0 font-weight-normal">{{ Auth::user()->name }}</h5>
-            <span>Gold Member</span>
+            <span>{{ Auth::user()->role }}</span>
           </div>
         </div>
         <a href="#" id="profile-dropdown" data-bs-toggle="dropdown"><i class="mdi mdi-dots-vertical"></i></a>
@@ -56,12 +56,59 @@
     <li class="nav-item nav-category">
       <span class="nav-link">Navigation</span>
     </li>
-    <li class="nav-item menu-items">
-      <a class="nav-link" href="index.html">
+    <li class="nav-item menu-items {{ request()->is('home') ? 'active' : '' }}">
+      <a class="nav-link" href="{{ route('home') }}">
         <span class="menu-icon">
           <i class="mdi mdi-speedometer"></i>
         </span>
-        <span class="menu-title">Dashboard</span>
+        <span class="menu-title">Inicio</span>
+      </a>
+    </li>
+    <!-- Categories -->
+    <li class="nav-item menu-items {{ request()->is('categories') ? 'active' : '' }}">
+      <a class="nav-link" href="{{ route('categories.index') }}">
+        <span class="menu-icon">
+          <i class="mdi mdi-format-list-bulleted"></i>
+        </span>
+        <span class="menu-title">Categorías</span>
+      </a>
+    </li>
+    <!-- Products -->
+    <li class="nav-item menu-items {{ request()->is('products') ? 'active' : '' }}">
+      <a class="nav-link" href="{{ route('products.index') }}">
+        <span class="menu-icon">
+          <i class="mdi mdi-food"></i>
+        </span>
+        <span class="menu-title">Productos</span>
+      </a>
+    </li>
+    <!-- Purchases -->
+    <li class="nav-item menu-items {{ request()->is('purchases') ? 'active' : '' }}">
+      <a class="nav-link" href="{{ route('purchases.index') }}">
+        <span class="menu-icon">
+          <i class="mdi mdi-cart"></i>
+        </span>
+        <span class="menu-title">Compras</span>
+      </a>
+    </li>
+
+    <!-- Sales -->
+    <li class="nav-item menu-items {{ request()->is('sales') ? 'active' : '' }}">
+      <a class="nav-link" href="{{ route('sales.index') }}">
+        <span class="menu-icon">
+          <i class="mdi mdi-cash-multiple"></i>
+        </span>
+        <span class="menu-title">Ventas</span>
+      </a>
+    </li>
+
+    <!-- Users -->
+    <li class="nav-item menu-items {{ request()->is('users') ? 'active' : '' }}">
+      <a class="nav-link" href="{{ route('users.index') }}">
+        <span class="menu-icon">
+          <i class="mdi mdi-account-multiple"></i>
+        </span>
+        <span class="menu-title">Usuarios</span>
       </a>
     </li>
     <li class="nav-item menu-items">

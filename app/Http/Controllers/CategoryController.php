@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
@@ -18,8 +19,27 @@ class CategoryController extends Controller
         return view('categories.create');
     }
 
-    public function store(Request $request)
+    /**
+     * Generate a slug from the given title.
+     *
+     * @param string $title
+     * @return string
+     */
+    private function generateSlug($title)
     {
+        $slug = \Illuminate\Support\Str::slug($title);
+        $count = Category::where('slug', 'LIKE', $slug . '%')->count();
+
+        if ($count > 0) {
+            $slug .= '-' . ($count + 1);
+        }
+
+        return $slug;
+    }
+    public function store(CategoryRequest $request)
+    {
+        $slug = $this->generateSlug($request->title);
+        $request->merge(['slug' => $slug]);
         $category = Category::create($request->all());
         return redirect()->route('categories.index')->with('success', 'Category created successfully');
     }
