@@ -16,7 +16,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $search = $request->get('search');
-        $users = User::where('name', 'like', '%'.$search.'%')->paginate(5);
+        $users = User::where('name', 'like', '%'.$search.'%')->paginate(10);
         return view('users.index', compact('users','search'));
     }
 
@@ -46,7 +46,7 @@ class UserController extends Controller
             }
         }
         User::create($user);
-        return redirect()->route('users.index')->with('success', 'User created successfully');
+        return redirect()->route('users.index')->with('success', 'Usuario creado con éxito');
     }
 
     /**

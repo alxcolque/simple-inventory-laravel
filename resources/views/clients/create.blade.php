@@ -4,11 +4,11 @@
     <!-- partial -->
     <div class="content-wrapper">
         <div class="page-header">
-            <h3 class="page-title"> Nuevo usuario </h3>
+            <h3 class="page-title"> Nuevo cliente </h3>
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('users.index') }}">usuarios</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Nuevo usuario</li>
+                    <li class="breadcrumb-item"><a href="{{ route('clients.index') }}">clientes</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Nuevo cliente</li>
                 </ol>
             </nav>
         </div>
@@ -16,13 +16,13 @@
             <div class="col-md-12 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
-                        <form class="forms-sample" method="POST" action="{{ route('users.store') }}"
+                        <form class="forms-sample" method="POST" action="{{ route('clients.store') }}"
                             autocomplete="off" enctype="multipart/form-data">
                             @csrf
-                            @include('users.fields')
+                            @include('clients.fields')
 
                             <button type="submit" class="btn btn-primary me-2">Guardar</button>
-                            <a href="{{ route('users.index') }}" class="btn btn-dark">Cancelar</a>
+                            <a href="{{ route('clients.index') }}" class="btn btn-dark">Cancelar</a>
                         </form>
                     </div>
                 </div>
@@ -35,5 +35,4 @@
 @section('css')
 @endsection
 @section('js')
-<script type="text/javascript" src="{{ asset('js/preview-img.js') }}"></script>
 @endsection

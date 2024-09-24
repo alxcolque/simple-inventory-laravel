@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('cinit', 30)->unique();
             $table->string('name', 50);
-            $table->string('phone', 30);
-            $table->string('email')->unique();
-            $table->string('website');
+            $table->string('phone', 30)->nullable();
+            $table->string('email')->nullable();
+            $table->string('website')->nullable();
             $table->timestamps();
         });
     }
