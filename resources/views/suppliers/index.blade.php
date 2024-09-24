@@ -7,23 +7,23 @@
                 <div class="col-lg-12 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
-                            <h2>Clientes</h2>
+                            <h2>Proveedores</h2>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <form class="for" action="{{ route('clients.index') }}" method="GET" autocomplete="off">
+                                    <form class="for" action="{{ route('suppliers.index') }}" method="GET" autocomplete="off">
                                         <div class="input-group mb-3">
-                                            <input type="text" class="form-control" name="search" value="{{ $search }}" placeholder="Buscar cliente">
+                                            <input type="text" class="form-control" name="search" value="{{ $search }}" placeholder="Buscar proveedor">
                                             <button class="btn btn-outline-secondary" type="submit">Buscar</button>
                                         </div>
                                     </form>
                                 </div>
                                 <div class="col-md-6 text-end mb-2">
-                                    <a href="{{ route('clients.create') }}" class="btn btn-primary"><i class="mdi mdi-plus"></i> Nuevo cliente</a>
+                                    <a href="{{ route('suppliers.create') }}" class="btn btn-primary"><i class="mdi mdi-plus"></i> Nuevo Proveedor</a>
                                 </div>
                             </div>
                             <!-- Agrega el scroll horizontal para la tabla -->
                             <div class="table-responsive">
-                                <!-- Agrega la tabla de cliente"> -->
+                                <!-- Agrega la tabla de suppliere"> -->
                                 <table class="table">
                                     <thead>
                                         <tr>
@@ -35,17 +35,17 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($clients as $client)
+                                        @foreach ($suppliers as $supplier)
                                             <tr>
-                                                <td>{{ $client->cinit }}</td>
-                                                <td>{{ $client->full_name }}</td>
-                                                <td>{{ $client->email }}</td>
-                                                <td>{{ $client->phone }}</td>
+                                                <td>{{ $supplier->cinit }}</td>
+                                                <td>{{ $supplier->full_name }}</td>
+                                                <td>{{ $supplier->email }}</td>
+                                                <td>{{ $supplier->phone }}</td>
                                                 <td>
-                                                    <a href="{{ route('clients.edit', $client) }}"
+                                                    <a href="{{ route('suppliers.edit', $supplier) }}"
                                                         class="btn btn-sm btn-warning"><i class="mdi mdi-pencil"></i> </a>
-                                                    <form action="{{ route('clients.destroy', $client) }}" method="POST"
-                                                        style="display: inline" onsubmit="return confirm('¿Estás seguro de eliminar este cliente?')">
+                                                    <form action="{{ route('suppliers.destroy', $supplier) }}" method="POST"
+                                                        style="display: inline" onsubmit="return confirm('¿Estás seguro de eliminar este proveedor?')">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-sm btn-danger"><i class="mdi mdi-delete-forever"></i></button>
@@ -57,7 +57,7 @@
                                     </tbody>
                                 </table>
                                 <div class="d-flex justify-content-center">
-                                    {{ $clients->links() }}
+                                    {{ $suppliers->links() }}
                                 </div>
                             </div>
 

@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SupplierRequest;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 
 class SupplierController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $suppliers = Supplier::all();
-        return view('suppliers.index', compact('suppliers'));
+        $search = $request->get('search');
+        $suppliers = Supplier::where('full_name', 'like', '%'.$search.'%')->paginate(10);
+        return view('suppliers.index', compact('suppliers','search'));
     }
 
     public function create()
@@ -18,10 +20,10 @@ class SupplierController extends Controller
         return view('suppliers.create');
     }
 
-    public function store(Request $request)
+    public function store(SupplierRequest $request)
     {
         $supplier = Supplier::create($request->all());
-        return redirect()->route('suppliers.index')->with('success', 'Supplier created successfully');
+        return redirect()->route('suppliers.index')->with('success', 'Proveedor creado correctamente');
     }
 
     public function edit($id)
@@ -30,17 +32,17 @@ class SupplierController extends Controller
         return view('suppliers.edit', compact('supplier'));
     }
 
-    public function update(Request $request, $id)
+    public function update(SupplierRequest $request, $id)
     {
         $supplier = Supplier::find($id);
         $supplier->update($request->all());
-        return redirect()->route('suppliers.index')->with('success', 'Supplier updated successfully');
+        return redirect()->route('suppliers.index')->with('success', 'Proveedor actualizado correctamente');
     }
 
     public function destroy($id)
     {
         $supplier = Supplier::find($id);
         $supplier->delete();
-        return redirect()->route('suppliers.index')->with('success', 'Supplier deleted successfully');
+        return redirect()->route('suppliers.index')->with('success', 'Proveedor eliminado correctamente');
     }
 }
