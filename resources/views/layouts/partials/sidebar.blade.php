@@ -8,7 +8,7 @@
       <div class="profile-desc">
         <div class="profile-pic">
           <div class="count-indicator">
-            <img class="img-xs rounded-circle " src="{{ Auth::user()->avatar }}" alt="">
+            <img class="img-xs rounded-circle " src="{{  Auth::user()->avatar? Auth::user()->avatar : 'https://cdn.iconscout.com/icon/free/png-256/free-avatar-380-456332.png%22' }}" alt="">
             <span class="count bg-success"></span>
           </div>
           <div class="profile-name">

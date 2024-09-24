@@ -7,7 +7,7 @@
                 <div class="col-lg-12 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
-                            <h1>Categorías</h1>
+                            <h2>Categorías</h2>
                             <div class="row">
                                 <div class="col-md-6">
                                     <form class="for" action="{{ route('categories.index') }}" method="GET" autocomplete="off">

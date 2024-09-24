@@ -151,13 +151,13 @@
       <li class="nav-item dropdown">
         <a class="nav-link" id="profileDropdown" href="#" data-bs-toggle="dropdown">
           <div class="navbar-profile">
-            <img class="img-xs rounded-circle" src="{{ Auth::user()->avatar }}" alt="">
+            <img class="img-xs rounded-circle" src="{{ Auth::user()->avatar? Auth::user()->avatar : 'https://cdn.iconscout.com/icon/free/png-256/free-avatar-380-456332.png%22' }}" alt="">
             <p class="mb-0 d-none d-sm-block navbar-profile-name">{{ Auth::user()->name }}</p>
             <i class="mdi mdi-menu-down d-none d-sm-block"></i>
           </div>
         </a>
         <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="profileDropdown">
-          <h6 class="p-3 mb-0">Profile</h6>
+          <h6 class="p-3 mb-0">Perfil</h6>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item preview-item">
             <div class="preview-thumbnail">

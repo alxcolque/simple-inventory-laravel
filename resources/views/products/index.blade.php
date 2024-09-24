@@ -56,7 +56,7 @@
                                             <tr>
                                                 <td>{{ $product->id }}</td>
                                                 <td>
-                                                    <img src="{{ $product->image }}" alt="{{ $product->name }}" class="" width="100">
+                                                    <img src="{{ $product->image? $product->image : 'https://e7.pngegg.com/pngimages/854/638/png-clipart-computer-icons-preview-batch-miscellaneous-angle-thumbnail.png' }}" alt="{{ $product->name }}" class="" width="100">
                                                 </td>
                                                 <td>{{ $product->name }}</td>
                                                 <td>{{ $product->code }}</td>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Str;
 use App\CPU\FileManager;
+use App\Http\Requests\ProductRequest;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -43,7 +44,7 @@ class ProductController extends Controller
 
         return $slug;
     }
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
         //dd($request->all());
         $product = new Product;
@@ -77,7 +78,7 @@ class ProductController extends Controller
         return view('products.edit', compact('product','categories','code'));
     }
 
-    public function update(Request $request, $id)
+    public function update(ProductRequest $request, $id)
     {
         $product = Product::find($id);
         $product->name = $request->name;
