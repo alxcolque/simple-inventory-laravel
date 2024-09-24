@@ -12,7 +12,7 @@
             @endisset
             @foreach ($categories as $item)
                 <option value="{{ $item->id }}"
-                    {{ old('category_id', $category->category_id ?? '') == $item->id ? 'selected' : '' }}>
+                    {{ old('category_id', $category->id ?? '') == $item->id ? 'selected' : '' }}>
                     {{ $item->title }}</option>
             @endforeach
         </select>

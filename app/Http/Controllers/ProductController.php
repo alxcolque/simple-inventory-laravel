@@ -31,7 +31,7 @@ class ProductController extends Controller
         $categories = Category::all();
         // genera un nuevo codigo de producto unico en la base de datos
         $code = 'PROD-'.str_pad(Product::all()->count() + 1, 4, '0', STR_PAD_LEFT);
-        return view('products.create', compact('categories', 'categories', 'code'));
+        return view('products.create', compact('categories', 'code'));
     }
     private function generateSlug($title)
     {
@@ -63,7 +63,7 @@ class ProductController extends Controller
             }
         }
         $product->save();
-        return redirect()->route('products.index')->with('success', 'Product created successfully');
+        return redirect()->route('products.index')->with('success', 'Producto creado correctamente');
     }
 
     public function show($id){
@@ -99,7 +99,7 @@ class ProductController extends Controller
             }
         }
         $product->save();
-        return redirect()->route('products.index')->with('success', 'Product updated successfully');
+        return redirect()->route('products.index')->with('success', 'Producto actualizado correctamente');
     }
 
     public function destroy($id)
@@ -107,6 +107,6 @@ class ProductController extends Controller
         $product = Product::find($id);
         FileManager::delete($product->image, 'key_image');
         $product->delete();
-        return redirect()->route('products.index')->with('success', 'Product deleted successfully');
+        return redirect()->route('products.index')->with('success', 'Producto eliminado correctamente');
     }
 }

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('supplier_id')->constrained('suppliers')->onDelete('cascade');
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
             $table->decimal('price', 8, 2)->nullable();
-            $table->integer('revenue')->unsigned()->nullable();
+            $table->decimal('revenue', 8, 2)->nullable();
             $table->integer('qty')->unsigned()->nullable();
             $table->timestamps();
         });

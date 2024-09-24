@@ -38,7 +38,7 @@
                                         @foreach ($clients as $client)
                                             <tr>
                                                 <td>{{ $client->cinit }}</td>
-                                                <td>{{ $client->full_name }}</td>
+                                                <td>{{ $client->name }}</td>
                                                 <td>{{ $client->email }}</td>
                                                 <td>{{ $client->phone }}</td>
                                                 <td>

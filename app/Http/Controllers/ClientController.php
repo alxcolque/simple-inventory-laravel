@@ -24,7 +24,7 @@ class ClientController extends Controller
     {
         $client = $request->all();
         Client::create($client);
-        return redirect()->route('users.index')->with('success', 'Cliente creado con éxito');
+        return redirect()->route('clients.index')->with('success', 'Cliente creado con éxito');
     }
 
     public function edit($id)
