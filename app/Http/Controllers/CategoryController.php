@@ -8,10 +8,11 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $categories = Category::all();
-        return view('categories.index', compact('categories'));
+        $search = $request->search;
+        $categories = Category::where('title', 'LIKE', '%'. $search . '%')->latest('id')->paginate(10);
+        return view('categories.index', compact('categories', 'search'));
     }
 
     public function create()

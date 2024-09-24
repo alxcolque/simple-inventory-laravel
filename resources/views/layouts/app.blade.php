@@ -20,6 +20,7 @@
     <!-- endinject -->
     <!-- Layout styles -->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+    @yield('css')
     <!-- End layout styles -->
     <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" />
     {{-- @vite(['resources/sass/app.scss', 'resources/js/app.js']) --}}
@@ -65,6 +66,7 @@
     <!-- Custom js for this page -->
     <script src="{{ asset('assets/js/dashboard.js') }}"></script>
     <!-- End custom js for this page -->
+    @yield('js')
 </body>
 
 </html>

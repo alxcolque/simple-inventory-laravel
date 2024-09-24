@@ -17,8 +17,8 @@
                                         @isset($category)
                                         <option value="{{ old('icon', $category->icon ?? '') }}" {{ old('icon') == $category->icon ? 'selected' : '' }}>{{ $category->title }}</option>
                                         @else
-
                                         <option value="">Seleccione un icono</option>
+                                        @endisset
                                         <option value="mdi mdi-home"><i class="mdi mdi-home"></i> Hogar</option>
                                         <option value="mdi mdi-food"><i class="mdi mdi-food"></i> Comida</option>
                                         <option value="mdi mdi-cart"><i class="mdi mdi-cart"></i> Compras</option>
@@ -39,7 +39,7 @@
                                         <option value="mdi mdi-cellphone"><i class="mdi mdi-cellphone"></i> Tecnología
                                         </option>
                                         <option value="mdi mdi-palette"><i class="mdi mdi-palette"></i> Arte</option>
-                                        @endisset
+
                                     </select>
                                     @error('icon')
                                         <span class="text-danger">{{ $message }}</span>
