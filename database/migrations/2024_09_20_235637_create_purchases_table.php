@@ -18,6 +18,7 @@ return new class extends Migration
             $table->decimal('price', 8, 2)->nullable();
             $table->decimal('revenue', 8, 2)->nullable();
             $table->integer('qty')->unsigned()->nullable();
+            $table->integer('stock')->nullable();
             $table->timestamps();
         });
     }

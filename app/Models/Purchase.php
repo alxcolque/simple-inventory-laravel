@@ -15,6 +15,7 @@ class Purchase extends Model
         'price',
         'revenue',
         'qty',
+        'stock'
     ];
 
     /**

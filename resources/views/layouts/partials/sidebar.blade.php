@@ -1,4 +1,4 @@
-<nav class="sidebar sidebar-offcanvas" id="sidebar">
+<nav class="sidebar sidebar-offcanvas no-print" id="sidebar">
   <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
     <a class="sidebar-brand brand-logo" href="{{ url('/') }}"><b class="text-warning">{{ config('app.name', 'Laravel') }}</b> </a>
     <a class="sidebar-brand brand-logo-mini" href="{{ url('/') }}"><img src="assets/images/logo-mini.svg" alt="logo" /></a>

@@ -2,6 +2,9 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -33,7 +36,10 @@
         <!-- partial -->
         <div class="container-fluid page-body-wrapper">
             <!-- partial:partials/_navbar.html -->
-            @include('layouts.partials.navbar')
+            <div class="no-print">
+                @include('layouts.partials.navbar')
+            </div>
+
 
             <!-- partial -->
             <div class="main-panel">
@@ -45,6 +51,7 @@
         <!-- page-body-wrapper ends -->
     </div>
     <!-- container-scroller -->
+    @yield('modals')
     <!-- plugins:js -->
     <script src="{{ asset('assets/vendors/js/vendor.bundle.base.js') }}"></script>
     <!-- endinject -->

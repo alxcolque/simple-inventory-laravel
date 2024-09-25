@@ -10,12 +10,10 @@ class Detail extends Model
     use HasFactory;
 
     protected $fillable = [
+        'sale_id',
         'product_id',
-        'client_id',
-        'quantity',
         'price',
-        'total',
-        'status',
+        'qty',
     ];
 
     /**
