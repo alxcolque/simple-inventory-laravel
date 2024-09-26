@@ -64,6 +64,18 @@ class PurchaseController extends Controller
 
     public function store(PurchaseRequest $request)
     {
+        // si existe el producto solo se debe actualizar el stock y la cantidad
+        $existProductoInPurchase = Purchase::where('product_id', $request->product_id)->first();
+        if($existProductoInPurchase){
+            $newQty = $request->qty + $existProductoInPurchase->qty;
+            $existProductoInPurchase->qty = $newQty;
+            $existProductoInPurchase->price = $request->price;
+            $existProductoInPurchase->revenue = $request->price_sale - $request->price;
+            $existProductoInPurchase->stock = $newQty;
+            $existProductoInPurchase->supplier_id = $request->supplier_id;
+            $existProductoInPurchase->save();
+            return redirect()->route('purchases.index')->with('success', 'Se añadió '. $request->qty .' productos a la compra');
+        }
         $purchase = $request->all();
         $purchase['revenue'] = $request->price_sale - $request->price;
         $purchase['stock'] = $request->qty;

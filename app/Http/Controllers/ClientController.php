@@ -15,6 +15,13 @@ class ClientController extends Controller
         return view('clients.index', compact('clients','search'));
     }
 
+    //funcion para getAllClient
+    public function getAllClient()
+    {
+        $clients = Client::all();
+        return response()->json($clients);
+    }
+
     public function create()
     {
         return view('clients.create');

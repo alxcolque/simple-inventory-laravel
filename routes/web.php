@@ -21,6 +21,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     // Routes for both admin and workers
     Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
+
+    Route::get('/clients-js', [ClientController::class, 'getAllClient']);
     Route::resource('clients', ClientController::class)->names('clients');
     Route::resource('sales', SaleController::class)->names('sales');
     Route::resource('purchases', PurchaseController::class)->names('purchases');

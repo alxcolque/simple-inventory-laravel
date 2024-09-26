@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Detail;
+use App\Models\Product;
+use App\Models\Purchase;
 use App\Models\Sale;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -45,55 +48,48 @@ class SaleController extends Controller
 
     public function store(Request $request)
     {
-        /* "clientId" => "2"
-        "total" => "342"
-        "cart" => array:3 [
-            0 => array:5 [
-            "id" => "1"
-            "name" => "Leche"
-            "image" => "http://localhost:8000/images/products/1727189696_66f2d2c062fbd.jpg"
-            "price" => "2"
-            "quantity" => 1
-            ],
-            1 => array:5 [
-            "id" => "2"
-            "name" => "Marillo"
-            "image" => null
-            "price" => "8"
-            "quantity" => 1
-            ],
-            2 => array:5 [
-            "id" => "3"
-            "name" => "Para hace el amor"
-            "image" => "http://localhost:8000/images/products/1727189838_66f2d34e2c67b.gif"
-            "price" => "166"
-            "quantity" => 2
-            ],
-        ] */
-        // se tiene Usuario autenticado como seller_id, clientId como client_id y total como total.
-        dd($request);
         $cart = $request->cart;
-        /* $client = json_decode($request->clientId);
-        $total = json_decode($request->total); */
-        $sale = Sale::create([
-            'seller_id' => Auth::user()->id,
-            'client_id' => $request->clientId,
-            'total' => $request->total,
-            'status' => 'pendiente',
-        ]);
-        //decode json cart
-
-        // guardar en la tabla detalle de ventas con la venta creada
+        // de cart fitra en un arreglo los id
+        $productIds = array_column($cart, 'id');
+        // Busca los productos por los id
+        $products = Product::whereIn('id', $productIds)->get();
+        //valida en la tabla de compras que la cantidad sea menor
         foreach ($cart as $item) {
-            $detail = new Detail();
-            $detail->sale_id = $sale->id;
-            $detail->product_id = $item->product_id;
-            $detail->qty = $item->quantity;
-            $detail->price = $item->price;
-            $detail->save();
+            $product = $products->where('id', $item['id'])->first();
+            // una consulta que sume la columna stock en la tabla purchases del producto en especifico.
+            $countStockPurchase = Purchase::where('product_id', $product->id)->sum('stock');
+            if($countStockPurchase < $item['quantity']){
+                return response()->json(['message' => 'Stock insuficiente', 'id'=>'0'], 400);
+            }
+        }
+        // Valida que los productos existan
+        if(count($products) != count($cart)){
+            return response()->json(['message' => 'Producto no encontrado', 'id'=>'0'], 404);
+        }else{
+            $sale = Sale::create([
+                'seller_id' => Auth::user()->id,
+                'client_id' => $request->clientId,
+                'total' => $request->total,
+                'status' => 'pendiente',
+            ]);
+            foreach ($cart as $item) {
+                $detail = new Detail();
+                $detail->sale_id = $sale->id;
+                $detail->product_id = $item['id'];
+                $detail->qty = $item['quantity'];
+                $detail->price = $item['price'];
+                $detail->save();
+                // actualiza la columna stock de compras con la cantidad de productos vendidos.
+                $purchase = Purchase::where('product_id', $item['id'])->first();
+                //$purchase->stock = $purchase->stock - $item['quantity'];
+                $purchase->stock = $purchase->stock - $item['quantity'];
+
+                $purchase->save();
+
+            }
+            return response()->json(['message' => 'Venta registrado con éxito', 'id'=>$sale->id], 200);
         }
     }
-
     public function edit($id)
     {
         $sale = Sale::find($id);
@@ -105,6 +101,12 @@ class SaleController extends Controller
         $sale = Sale::find($id);
         $sale->update($request->all());
         return redirect()->route('sales.index')->with('success', 'Sale updated successfully');
+    }
+
+    public function show($id){
+        $sale = Sale::find($id);
+        $detail = Detail::where('sale_id', $id)->get();
+        return view('sales.show', compact('sale', 'detail'));
     }
 
     public function destroy($id)

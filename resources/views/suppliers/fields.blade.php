@@ -26,7 +26,7 @@
     <div class="col-md-6 form-group row">
         <label for="cinit" class="col-sm-3 col-form-label">CI/NIT <span class="text-danger">*</span></label>
         <div class="col-sm-9">
-            <input type="text" class="form-control" id="cinit" name="cinit" placeholder="Contraseña"
+            <input type="text" class="form-control" id="cinit" name="cinit" placeholder="CI/NIT"
                 value="{{ old('cinit', $supplier->cinit ?? '') }}">
             @error('cinit')
                 <small class="text-danger">{{ $message }}</small>
@@ -36,7 +36,7 @@
     <div class="col-md-6 form-group row">
         <label for="phone" class="col-sm-3 col-form-label">Celular </span></label>
         <div class="col-sm-9">
-            <input type="text" class="form-control" id="phone" name="phone" placeholder="Contraseña"
+            <input type="text" class="form-control" id="phone" name="phone" placeholder="69999999"
                 value="{{ old('phone', $supplier->phone ?? '') }}">
             @error('phone')
                 <small class="text-danger">{{ $message }}</small>

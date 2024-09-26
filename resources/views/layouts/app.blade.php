@@ -52,6 +52,67 @@
     </div>
     <!-- container-scroller -->
     @yield('modals')
+    <!-- Modal para un carrito de compras -->
+    <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cartModalLabel">Carrito de compras</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="table-reponsive" id="cartTable" style="font-size: 0.8rem;">
+                        <thead>
+                            <tr>
+                                <th>Producto</th>
+                                <th>Precio</th>
+                                <th>Cantidad</th>
+                                <th>Subtotal</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="cart-items">
+
+                        </tbody>
+                        <!-- Agrega más filas para totales -->
+                        <tfoot>
+                            <tr>
+                                <td colspan="2"></td>
+                                <td>
+                                    <h4>Total: Bs </h4>
+                                </td>
+                                <td>
+                                    <h4 id="total">0</h4>
+                                </td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <!-- Asigna el cliente a esta compra, con select 2, desde la bariable $clients -->
+                    <div id="clientSelect" class="form-group">
+
+                    </div>
+                    {{-- <select class="js-example-basic-single" id="client" name="client"
+                        onchange="asignClient( this.value, this.options[this.selectedIndex].text )">
+                        <option value="">-- Seleccione un cliente --</option>
+                        @foreach ($clients as $client)
+                            <option value="{{ $client->id }}">{{ $client->name }}</option>
+                        @endforeach
+                    </select> --}}
+                    <b>Cliente: </b><span id="clientNameCompra"></span>
+                </div>
+                <div class="modal-footer">
+                    <!-- Boton cancelar --->
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+
+                    <button type="button" class="btn btn-danger"
+                        onclick="clearLocalStorage();">Limpiar</button>
+
+                    <button type="button" id="payButton" class="btn btn-primary">Pagar</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- plugins:js -->
     <script src="{{ asset('assets/vendors/js/vendor.bundle.base.js') }}"></script>
     <!-- endinject -->
@@ -74,6 +135,7 @@
     <script src="{{ asset('assets/js/dashboard.js') }}"></script>
     <!-- End custom js for this page -->
     @yield('js')
+    <script src="{{ asset('js/home.js') }}"></script>
 </body>
 
 </html>

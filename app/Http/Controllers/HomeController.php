@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Client;
 use App\Models\Product;
 use App\Models\Purchase;
+use App\Models\Sale;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -62,11 +63,14 @@ class HomeController extends Controller
         $categories = Category::whereIn('id', $categoryInPurchases->values())->get();
         $total_compras = 0;
         $total_beneficio = 0;
+        // Calcula el total de ventas.
+        $total_ventas = Sale::sum('total');
+
         foreach($purchases as $purchase){
             $total_compras += $purchase->price * $purchase->qty;
             $total_beneficio += $purchase->revenue * $purchase->qty;
         }
         $clients = Client::all();
-        return view('home', compact('purchases', 'search', 'categories', 'filter','total_compras','total_beneficio','clients'));
+        return view('home', compact('purchases', 'search', 'categories', 'filter','total_compras','total_beneficio','total_ventas','clients'));
     }
 }

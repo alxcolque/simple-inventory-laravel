@@ -7,7 +7,7 @@
             <h2 class="page-title"> {{$purchase->product->name}} </h2>
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('products.index') }}">Productos</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('purchases.index') }}">Compras</a></li>
                     <li class="breadcrumb-item active" aria-current="page">{{$purchase->product->name}}</li>
                 </ol>
             </nav>
@@ -20,7 +20,7 @@
                             <div class="col-md-6">
                                 <p><strong>Categoría:</strong> {{ $purchase->product->category->title }}</p>
                                 <p><strong>Código:</strong> {{ $purchase->product->code }}</p>
-                                <p><strong>Proveedor:</strong> {{ $purchase->product->category->title }}</p>
+                                <p><strong>Proveedor:</strong> {{ $purchase->supplier->full_name }}</p>
                                 <p><strong>Cantidad:</strong> {{ $purchase->qty }}</p>
                                 <p><strong>Precio de compra:</strong> {!! $purchase->price !!}</p>
                                 <p><strong>Precio de venta:</strong> {!! $purchase->price + $purchase->revenue !!}</p>
