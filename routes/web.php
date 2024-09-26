@@ -23,6 +23,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
 
     Route::get('/clients-js', [ClientController::class, 'getAllClient']);
+    Route::get('/sales-graph/{value}', [HomeController::class, 'getSalesGraph']);
     Route::resource('clients', ClientController::class)->names('clients');
     Route::resource('sales', SaleController::class)->names('sales');
     Route::resource('purchases', PurchaseController::class)->names('purchases');

@@ -61,16 +61,70 @@ class HomeController extends Controller
         $allPurchases = Purchase::all();
         $categoryInPurchases = Product::whereIn('id', $allPurchases->pluck('product_id'))->pluck('category_id', 'id')->unique();
         $categories = Category::whereIn('id', $categoryInPurchases->values())->get();
+
+        $total_ventas = 0;
         $total_compras = 0;
         $total_beneficio = 0;
         // Calcula el total de ventas.
         $total_ventas = Sale::sum('total');
+        // Ventas por categorias
+        $categories_sales = Sale::selectRaw('categories.title as name, categories.color, sum(sales.total) as total')
+            ->join('details', 'details.sale_id', '=', 'sales.id')
+            ->join('products', 'products.id', '=', 'details.product_id')
+            ->join('categories', 'categories.id', '=', 'products.category_id')
+            ->groupBy('categories.title','categories.color')
+            ->get();
+
+        // calcula total en stock sin vender
+        $total_stock = 0;
 
         foreach($purchases as $purchase){
             $total_compras += $purchase->price * $purchase->qty;
             $total_beneficio += $purchase->revenue * $purchase->qty;
+            if($purchase->stock > 0){
+                $total_stock += $purchase->revenue * $purchase->stock;
+            }
         }
         $clients = Client::all();
-        return view('home', compact('purchases', 'search', 'categories', 'filter','total_compras','total_beneficio','total_ventas','clients'));
+        return view('home', compact('purchases', 'search', 'categories', 'filter','total_compras','total_beneficio','total_ventas','clients','total_stock','categories_sales'));
+    }
+    public function getSalesGraph($value){
+        $data = [];
+        if($value == 'week'){
+            //en un array lista los 7 dias de la semana en español
+            $days = ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'];
+            //recorre los 7 dias de la semana
+            for($i = 0; $i < 7; $i++){
+                //primero verifica el dia actual
+                $data[] = [
+                    'labelGraph' => $days[date('w', strtotime('-'.$i.' days'))],
+                    'total' => Sale::whereDate('created_at', date('Y-m-d', strtotime('-'.$i.' days')))->sum('total')
+                ];
+            }
+
+        }else if($value == 'month'){
+            //en un array lista los 12 meses del año en español
+            $months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+
+            //recorre los 12 meses del año
+            for($i = 0; $i < 12; $i++){
+                $data[] = [
+                    'labelGraph' => $months[date('n', strtotime('-'.$i.' month')) - 1] = $months[date('n', strtotime('-'.$i.' month')) - 1  ],
+                    'total' => Sale::whereMonth('created_at', date('n', strtotime('-'.$i.' month')))->sum('total')
+                ];
+                // asigna los valores de todas las ventas al mes que pertenece
+
+            }
+        }else{
+            //recorre los 5 ultimos años
+            for($i = 0; $i < 5; $i++){
+                //primero verifica el año actual
+                $data[] = [
+                    'labelGraph' => date('Y', strtotime('-'.$i.' years')),
+                    'total' => Sale::whereYear('created_at', date('Y', strtotime('-'.$i.' years')))->sum('total')
+                ];
+            }
+        }
+        return response()->json($data);
     }
 }

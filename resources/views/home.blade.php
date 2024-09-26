@@ -12,7 +12,7 @@
                         <div class="row">
                             <div class="col-8 col-sm-12 col-xl-8 my-auto">
                                 <div class="d-flex d-sm-block d-md-flex align-items-center">
-                                    <h2 class="mb-0">Bs {{$total_beneficio}}</h2>
+                                    <h2 class="mb-0">Bs {{ $total_beneficio }}</h2>
                                     {{-- <p class="text-success ms-2 mb-0 font-weight-medium">+3.5%</p> --}}
                                 </div>
                                 {{-- <h6 class="text-muted font-weight-normal">11.38% Since last month</h6> --}}
@@ -31,7 +31,7 @@
                         <div class="row">
                             <div class="col-8 col-sm-12 col-xl-8 my-auto">
                                 <div class="d-flex d-sm-block d-md-flex align-items-center">
-                                    <h2 class="mb-0">Bs {{$total_ventas}}</h2>
+                                    <h2 class="mb-0">Bs {{ $total_ventas }}</h2>
                                     {{-- <p class="text-success ms-2 mb-0 font-weight-medium">+8.3%</p> --}}
                                 </div>
                                 {{-- <h6 class="text-muted font-weight-normal"> 9.61% Since last month</h6> --}}
@@ -50,7 +50,7 @@
                         <div class="row">
                             <div class="col-8 col-sm-12 col-xl-8 my-auto">
                                 <div class="d-flex d-sm-block d-md-flex align-items-center">
-                                    <h2 class="mb-0">Bs {{$total_compras}}</h2>
+                                    <h2 class="mb-0">Bs {{ $total_compras }}</h2>
                                     {{-- <p class="text-danger ms-2 mb-0 font-weight-medium">-2.1% </p> --}}
                                 </div>
                                 {{-- <h6 class="text-muted font-weight-normal">2.27% Since last month</h6> --}}
@@ -98,7 +98,8 @@
                             </div>
                         </div>
                         <div class="no-print">
-                            <select class="mb-2" id="filter" name="filter" onchange="window.location.href = this.value">
+                            <select class="mb-2" id="filter" name="filter"
+                                onchange="window.location.href = this.value">
                                 <option value="">-- Filtrar por: --</option>
                                 <option value="{{ route('home') }}">Todos</option>
                                 <option value="{{ route('home', ['filter' => 'day']) }}"
@@ -160,10 +161,50 @@
                 </div>
             </div>
         </div>
+        <!-- Seccion de graficos -->
+        <div class="row">
+            <div class="col-lg-6 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+
+                        <h4 class="card-title">Total Stock: {{$total_beneficio}}</h4>
+                        <canvas id="stockCanva" style="height: 311px; display: block; width: 623px;" width="623"
+                            height="311" class="chartjs-render-monitor"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+
+                        <h4 class="card-title">Ventas por categoría</h4>
+                        <canvas id="pieChartByCategory" style="height: 311px; display: block; width: 623px;" width="623"
+                            height="311" class="chartjs-render-monitor"></canvas>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-lg-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Venta por tiempo</h4>
+                        <!-- Select para graficar ventas por semanas, meses y años -->
+                        <select class="mb-2" id="filterGrahp" name="filter_graph" onchange="filterGraph(this.value)">
+                            <option value="week">Última semana</option>
+                            <option value="month">Ultimo Año</option>
+                            <option value="year">Ultimos 5 año</option>
+                        </select>
+                        <canvas id="barChart" style="height: 166px; display: block; width: 333px;" width="222"
+                            height="110" class="chartjs-render-monitor"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 @endsection
 @section('modals')
-
 @endsection
 @section('css')
     <style>
@@ -202,6 +243,17 @@
             var fileName = new Date().toISOString().slice(0, 19).replace(/:/g, '-') + ".xlsx";
             XLSX.writeFile(wb, 'compra_' + fileName);
         });
-    </script>
+        /* Crar el grafico de stock */
+        var forSale = '{{$total_stock}}';
+        // alternativa para obtener datos de la variable de php
+        // var forSale = document.getElementById('forSale').value;
 
+        var sold = {{$total_beneficio - $total_stock}}
+        //Recupera la sonculta de la variable $categories_sales y la convierte en arreglo de javascript
+        //Uncaught SyntaxError: Expected property name or '}' in JSON at position 2
+        var categoriesSales = JSON.parse('{!! json_encode($categories_sales) !!}');
+        //console.log(categoriesSales);
+
+    </script>
+    <script src="{{ asset('js/chart-home.js') }}"></script>
 @endsection
