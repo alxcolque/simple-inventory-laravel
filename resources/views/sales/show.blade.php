@@ -65,13 +65,14 @@
                                 <button class="btn btn-primary btn-sm" onclick="window.print()"><i class="mdi mdi-printer"></i> Imprimir</button>
                                 {{-- boton inicio --}}
                                 <a href="{{route('home')}}" class="btn btn-info btn-sm"><i class="mdi mdi-home"></i> Inicio</a>
+                                @if(auth()->user()->role == 'admin')
                                 <form action="{{ route('sales.destroy', $sale->id) }}" method="POST"
                                     style="display: inline" onsubmit="return confirm('¿Estás seguro de eliminar esta venta?')">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-sm btn-danger"><i class="mdi mdi-delete-forever"></i>Eliminar</button>
                                 </form>
-
+                                @endif
                             </div>
                         </div>
                     </div>

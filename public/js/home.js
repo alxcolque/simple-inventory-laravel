@@ -6,6 +6,7 @@
         function addToCart(id, name, image, price, stock) {
             if (stock <= 0) {
                 alert('Producto sin stock');
+                //Toast.create("Error", 'Producto sin stock', TOAST_STATUS.SUCCESS, 5000);
                 return;
             }
             let cart = JSON.parse(localStorage.getItem('cart')) || [];

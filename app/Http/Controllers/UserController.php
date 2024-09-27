@@ -101,4 +101,10 @@ class UserController extends Controller
         $user->delete();
         return redirect()->route('users.index')->with('success', 'User deleted successfully');
     }
+    // muestra el perfil del usuario autenticado
+    public function profile()
+    {
+        $user = auth()->user();
+        return view('users.profile', compact('user'));
+    }
 }

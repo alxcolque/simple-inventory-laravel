@@ -22,7 +22,7 @@ class ClientRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'cinit' => 'required|string|max:30',
+            'cinit' => 'required|string|max:30|unique:clients,cinit',
             'name' => 'required|string|max:50',
             'email' => 'nullable|email|max:255',
             'phone' => 'nullable|string|max:30',

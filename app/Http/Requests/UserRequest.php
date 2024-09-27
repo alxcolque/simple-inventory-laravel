@@ -25,7 +25,7 @@ class UserRequest extends FormRequest
             'name' => 'required|string|max:255',
             #'username' => 'required|string|max:255|unique:users',
             'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
+            'email' => 'required|email|max:255|unique:users,email',
             'password'=> 'required|string|min:8',
             'password_confirm' => 'required|same:password',
             'role' => 'required|string|in:admin,user',

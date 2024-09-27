@@ -44,12 +44,14 @@
                                                 <td>
                                                     <a href="{{ route('clients.edit', $client) }}"
                                                         class="btn btn-sm btn-warning"><i class="mdi mdi-pencil"></i> </a>
+                                                    @if(auth()->user()->role == 'admin')
                                                     <form action="{{ route('clients.destroy', $client) }}" method="POST"
                                                         style="display: inline" onsubmit="return confirm('¿Estás seguro de eliminar este cliente?')">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-sm btn-danger"><i class="mdi mdi-delete-forever"></i></button>
                                                     </form>
+                                                    @endif
 
                                                 </td>
                                             </tr>

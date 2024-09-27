@@ -35,15 +35,17 @@
                         </div>
                         <div class="row mt-3">
                             <div class="col-md-12">
+
                                 <a href="{{ route('purchases.edit', $purchase->id) }}" class="btn btn-primary"> <i class="mdi mdi-pencil"></i> Editar</a>
 
-
+                                @if(auth()->user()->role == 'admin')
                                 <form action="{{ route('purchases.destroy', $purchase->id) }}" method="POST"
                                     style="display: inline" onsubmit="return confirm('¿Estás seguro de eliminar esta compra?')">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-sm btn-danger"><i class="mdi mdi-delete-forever"></i>Eliminar</button>
                                 </form>
+                                @endif
                                 <a href="{{ route('purchases.index') }}" class="btn btn-dark"> <i class="mdi mdi-arrow-left"></i>Cancelar</a>
                             </div>
                         </div>

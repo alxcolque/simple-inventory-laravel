@@ -56,7 +56,8 @@
         <label for="price_sale" class="col-form-label">Precio de venta <span class="text-danger">*</span></label>
         <div class="col-sm-12">
             <input type="number" class="form-control" id="price_sale" name="price_sale" placeholder="price_sale"
-                value="{{ old('price_sale', $purchase->price_sale ?? '0') }}">
+                value="{{ old('price_sale', isset($purchase)? $purchase->price + $purchase->revenue: '0') }}"
+            >
             @error('price_sale')
                 <small class="text-danger">{{ $message }}</small>
             @enderror

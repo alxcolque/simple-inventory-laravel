@@ -8,10 +8,16 @@ use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
+// desabilitar la ruta /register
+Auth::routes(['register' => false]);
+
 Route::get('/', function () {
+    //redirige a login
+    return redirect('/login');
     return view('welcome');
 });
 
@@ -21,6 +27,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     // Routes for both admin and workers
     Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
+    Route::get('/profile', [UserController::class, 'profile'])->name('profile');
+    Route::get('/profile/edit', [UserController::class, 'editProfile'])->name('profile.edit');
+    Route::get('/profile/pass', [UserController::class, 'passwordChange'])->name('profile.password');
+    Route::get('/profile/delete', [UserController::class, 'passwordDelete'])->name('profile.delete');
 
     Route::get('/clients-js', [ClientController::class, 'getAllClient']);
     Route::get('/sales-graph/{value}', [HomeController::class, 'getSalesGraph']);

@@ -22,7 +22,7 @@ class SupplierRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'cinit' => 'required',
+            'cinit' => 'required|unique:suppliers,cinit',
             'full_name' => 'required',
             'email' => 'nullable|email',
             'phone' => 'nullable',

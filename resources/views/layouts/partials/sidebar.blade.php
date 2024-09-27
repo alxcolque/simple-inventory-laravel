@@ -15,6 +15,7 @@
     <li class="nav-item nav-category">
       <span class="nav-link">PRODUCTO</span>
     </li>
+    @if(auth()->user()->role == 'admin')
     <!-- Categories -->
     <li class="nav-item menu-items {{ request()->is('categories') ? 'active' : '' }}">
       <a class="nav-link" href="{{ route('categories.index') }}">
@@ -33,6 +34,7 @@
         <span class="menu-title">Productos</span>
       </a>
     </li>
+    @endif
     <!-- Purchases -->
     <li class="nav-item menu-items {{ request()->is('purchases') ? 'active' : '' }}">
       <a class="nav-link" href="{{ route('purchases.index') }}">
@@ -56,6 +58,8 @@
         <span class="nav-link">PERSONAL</span>
       </li>
     <!-- Users -->
+    <!-- acceso a Users solo admin -->
+    @if(auth()->user()->role == 'admin')
     <li class="nav-item menu-items {{ request()->is('users') ? 'active' : '' }}">
       <a class="nav-link" href="{{ route('users.index') }}">
         <span class="menu-icon">
@@ -64,6 +68,7 @@
         <span class="menu-title">Usuarios</span>
       </a>
     </li>
+    @endif
     <!-- Clients -->
     <li class="nav-item menu-items {{ request()->is('clients') ? 'active' : '' }}">
       <a class="nav-link" href="{{ route('clients.index') }}">
@@ -73,6 +78,7 @@
         <span class="menu-title">Clientes</span>
       </a>
     </li>
+    @if(auth()->user()->role == 'admin')
     <!-- Suppliers -->
     <li class="nav-item menu-items {{ request()->is('suppliers') ? 'active' : '' }}">
       <a class="nav-link" href="{{ route('suppliers.index') }}">
@@ -82,5 +88,6 @@
         <span class="menu-title">Proveedores</span>
         </a>
     </li>
+    @endif
   </ul>
 </nav>

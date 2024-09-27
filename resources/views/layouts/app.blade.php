@@ -23,6 +23,7 @@
     <!-- endinject -->
     <!-- Layout styles -->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('css/bootstrap-toaster.min.css') }}"> --}}
     @yield('css')
     <!-- End layout styles -->
     <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" />
@@ -30,6 +31,7 @@
 </head>
 
 <body>
+
     <div class="container-scroller">
         <!-- partial:partials/_sidebar.html -->
         @include('layouts.partials.sidebar')
@@ -43,6 +45,7 @@
 
             <!-- partial -->
             <div class="main-panel">
+                @include('layouts.partials.alert')
                 @yield('content')
                 @include('layouts.partials.footer')
             </div>
@@ -113,6 +116,7 @@
             </div>
         </div>
     </div>
+    {{-- <script src="{{ asset('js/bootstrap-toaster.min.js') }}"></script> --}}
     <!-- plugins:js -->
     <script src="{{ asset('assets/vendors/js/vendor.bundle.base.js') }}"></script>
     <!-- endinject -->
