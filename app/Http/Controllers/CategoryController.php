@@ -42,7 +42,7 @@ class CategoryController extends Controller
         $slug = $this->generateSlug($request->title);
         $request->merge(['slug' => $slug]);
         $category = Category::create($request->all());
-        return redirect()->route('categories.index')->with('success', 'Category created successfully');
+        return redirect()->route('categories.index')->with('success', 'Categoria creada exitosamente');
     }
 
     public function edit($id)
@@ -55,13 +55,13 @@ class CategoryController extends Controller
     {
         $category = Category::find($id);
         $category->update($request->all());
-        return redirect()->route('categories.index')->with('success', 'Category updated successfully');
+        return redirect()->route('categories.index')->with('success', 'Categoria actualizada exitosamente');
     }
 
     public function destroy($id)
     {
         $category = Category::find($id);
         $category->delete();
-        return redirect()->route('categories.index')->with('success', 'Category deleted successfully');
+        return redirect()->route('categories.index')->with('success', 'Categoria eliminada exitosamente');
     }
 }

@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="../../assets/css/style.css">
     <!-- End layout styles -->
     <link rel="shortcut icon" href="../../assets/images/favicon.png" />
+    {{-- Los letras del inputs mientras se escribe deben ser claras --}}
 </head>
 
 <body>

@@ -15,7 +15,9 @@ class Purchase extends Model
         'price',
         'revenue',
         'qty',
-        'stock'
+        'stock',
+        'unit',
+        'expiration_date',
     ];
 
     /**

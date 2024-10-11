@@ -145,7 +145,7 @@
                                             <td class="no-print">
                                                 <!-- añadir boton de añadir al carrrito -->
                                                 <button type="button"
-                                                    onclick="addToCart('{{ $purchase->product->id }}','{{ $purchase->product->name }}','{{ $purchase->product->image }}', '{{ $purchase->price + $purchase->revenue }}', '{{ $purchase->stock }}')"
+                                                    onclick="selectProduct('{{ $purchase->product->id }}','{{ $purchase->product->name }}','{{ $purchase->product->image }}', '{{ $purchase->price + $purchase->revenue }}', '{{ $purchase->stock }}')"
                                                     class="btn btn-success"><i class="mdi mdi-cart"></i></button>
                                             </td>
                                         </tr>
@@ -205,6 +205,50 @@
     </div>
 @endsection
 @section('modals')
+    <!-- Modal para agregar cantidad de producto al carrito -->
+    <div class="modal fade" id="addCartQuantityModal" tabindex="-1" aria-labelledby="addCartQuantityModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addCartQuantityModalLabel">Agregar al carrito</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="addCartQuantity">
+                <div class="modal-body">
+                    <p>¿Cuántas unidades desea agregar al carrito?</p>
+                    {{-- Aumentar de tamaño de campo de cantidad --}}
+                    <input type="number" class="form-control text-dark" id="quantity" min="1" value="1"
+                    style="width: 100px;font-size: 1.2rem; background-color: #f0f0f0;">
+                    {{-- input de unidades --}}
+                    <p class="mt-2">Selecciona la unidad de medida</p>
+                    <div class="mt-2">
+                        {{-- units = ['caja', 'tableta', 'frasco', 'kilo', 'quintal', 'tonelada', 'unidad', 'gramos', 'mililitros', 'miligramos', 'microgramos']; --}}
+                        <select class="form-select" id="unit" name="unit" required>
+                            <option value="">Selecciona una unidad</option>
+                            <option value="unidad">Unidad</option>
+                            <option value="caja">Caja</option>
+                            <option value="tableta">Tableta</option>
+                            <option value="frasco">Frasco</option>
+                            <option value="kilo">Kilo</option>
+                            <option value="quintal">Quintal</option>
+                            <option value="tonelada">Tonelada</option>
+                            <option value="unidad">Unidad</option>
+                            <option value="gramos">Gramos</option>
+                            <option value="mililitros">Mililitros</option>
+                            <option value="miligramos">Miligramos</option>
+                            <option value="microgramos">Microgramos</option>
+                        </select>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Agregar</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 @section('css')
     <style>
@@ -252,8 +296,44 @@
         //Recupera la sonculta de la variable $categories_sales y la convierte en arreglo de javascript
         //Uncaught SyntaxError: Expected property name or '}' in JSON at position 2
         var categoriesSales = JSON.parse('{!! json_encode($categories_sales) !!}');
-        //console.log(categoriesSales);
+
+        //al dar click en el boton de selectProduct, se abre un modal con el producto seleccionado para agregar la cantidad
+        var productId;
+        var productName;
+        var productImage;
+        var productPrice;
+        var productStock;
+        function selectProduct(id, name, image, price, stock){
+            productId = id;
+            productName = name;
+            productImage = image;
+            productPrice = price;
+            productStock = stock;
+            $('#addCartQuantityModal').modal('show');
+        }
+
+        //al dar click en el boton de agregar, se agrega el producto al carrito
+        document.getElementById('addCartQuantity').addEventListener('submit', function(e){
+            e.preventDefault();
+            //console.log(productId, productName, productImage, productPrice, productStock);
+            //obtener la cantidad de productos a agregar
+            var quantity = document.getElementById('quantity').value;
+            var unit = document.getElementById('unit').value;
+            if(quantity == 0){
+                return;
+            }
+            if(quantity > productStock){
+                alert('No hay suficiente stock disponible');
+                //$('#addCartQuantityModal').modal('hide');
+                return;
+            }else{
+                addToCart(productId, productName, productImage, productPrice, productStock, quantity, unit);
+                $('#addCartQuantityModal').modal('hide');
+            }
+
+        });
 
     </script>
     <script src="{{ asset('js/chart-home.js') }}"></script>
+
 @endsection

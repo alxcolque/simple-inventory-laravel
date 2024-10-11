@@ -3,8 +3,8 @@
 
 </div>
 <div class="row">
-    <div class="col-md-6 form-group row">
-        <label for="product_id" class="col-sm-3 col-form-label">Producto</label>
+    <div class="col-md-3 form-group">
+        <label for="product_id" class="col-form-label">Producto<span class="text-danger">*</span></label>
         <div class="col-sm-9">
             <select class="js-example-basic-single" name="product_id" id="product_id">
                 @isset($purchase)
@@ -26,9 +26,24 @@
             @enderror
         </div>
     </div>
+    {{-- Campo unit --}}
+    <div class="col-md-3 form-group">
+        <label for="unit" class="col-form-label">Unidad <span class="text-danger">*</span></label>
+        <div class="col-sm-9">
+            <input type="text" class="form-control" id="unit" name="unit" placeholder="Unidad"
+                value="{{ old('unit', $purchase->unit ?? '') }}">
+        </div>
+    </div>
+    {{-- Fecha de expiracion --}}
+    <div class="col-md-3 form-group">
+        <label for="expiration_date" class="col-form-label">Fecha de expiración</label>
+        <div class="col-sm-9">
+            <input type="date" class="form-control" id="expiration_date" name="expiration_date" placeholder="Fecha de expiración" value="{{ old('expiration_date', $purchase->expiration_date ?? '') }}">
+        </div>
+    </div>
     <!-- campo cantidad -->
-    <div class="col-md-6 form-group row">
-        <label for="qty" class="col-sm-3 col-form-label">Cantidad <span class="text-danger">*</span></label>
+    <div class="col-md-3 form-group">
+        <label for="qty" class="col-form-label">Cantidad <span class="text-danger">*</span></label>
         <div class="col-sm-9">
             <input type="number" class="form-control" id="qty" name="qty" placeholder="Cantidad"
                 value="{{ old('qty', $purchase->qty ?? '1') }}">
@@ -44,7 +59,7 @@
     <div class="col-md-4 form-group row">
         <label for="price" class="col-form-label">Precio de compra <span class="text-danger">*</span></label>
         <div class="col-sm-12">
-            <input type="number" class="form-control" id="price" name="price" placeholder="Precio de compra"
+            <input type="decimal" min="0" class="form-control" id="price" name="price" placeholder="Precio de compra"
                 value="{{ old('price', $purchase->price ?? '0') }}">
             @error('price')
                 <small class="text-danger">{{ $message }}</small>
@@ -55,7 +70,7 @@
     <div class="col-md-4 form-group row">
         <label for="price_sale" class="col-form-label">Precio de venta <span class="text-danger">*</span></label>
         <div class="col-sm-12">
-            <input type="number" class="form-control" id="price_sale" name="price_sale" placeholder="price_sale"
+            <input type="decimal" min="0" class="form-control" id="price_sale" name="price_sale" placeholder="price_sale"
                 value="{{ old('price_sale', isset($purchase)? $purchase->price + $purchase->revenue: '0') }}"
             >
             @error('price_sale')

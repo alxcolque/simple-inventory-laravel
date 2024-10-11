@@ -80,6 +80,17 @@
                         <!-- Agrega más filas para totales -->
                         <tfoot>
                             <tr>
+                                <td> </td>
+                                <td> <b>Con IVA:</b></td>
+                                <td class="text-center">
+                                    <input class="form-check-input" type="checkbox" id="iva" name="iva">
+                                </td>
+                                <td>
+                                    <h4 id="totalIva">0</h4>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
                                 <td colspan="2"></td>
                                 <td>
                                     <h4>Total: Bs </h4>
@@ -91,25 +102,21 @@
                             </tr>
                         </tfoot>
                     </table>
-                    <!-- Asigna el cliente a esta compra, con select 2, desde la bariable $clients -->
-                    <div id="clientSelect" class="form-group">
+                    {{-- Alineado a la --}}
+                    <div class="d-flex justify-content-between">
+                        {{-- Check para marcar iva --}}
+                        <span id="clientNameCompra"></span>
 
+                        <!-- Asigna el cliente a esta compra, con select 2, desde la bariable $clients -->
+                        <div id="clientSelect" class="form-group"></div>
                     </div>
-                    {{-- <select class="js-example-basic-single" id="client" name="client"
-                        onchange="asignClient( this.value, this.options[this.selectedIndex].text )">
-                        <option value="">-- Seleccione un cliente --</option>
-                        @foreach ($clients as $client)
-                            <option value="{{ $client->id }}">{{ $client->name }}</option>
-                        @endforeach
-                    </select> --}}
-                    <b>Cliente: </b><span id="clientNameCompra"></span>
+
                 </div>
                 <div class="modal-footer">
                     <!-- Boton cancelar --->
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
 
-                    <button type="button" class="btn btn-danger"
-                        onclick="clearLocalStorage();">Limpiar</button>
+                    <button type="button" class="btn btn-danger" onclick="clearLocalStorage();">Limpiar</button>
 
                     <button type="button" id="payButton" class="btn btn-primary">Pagar</button>
                 </div>

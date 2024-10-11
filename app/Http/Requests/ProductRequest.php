@@ -21,10 +21,16 @@ class ProductRequest extends FormRequest
      */
     public function rules(): array
     {
+        //si el metodo es put, se elimina la regla unique
+        if ($this->isMethod('put')) {
+            $unique = '';
+        } else {
+            $unique = '|unique:products,code';
+        }
         return [
             'category_id' => 'required|integer',
             'name' => 'required|string|max:255',
-            'code' => 'required|string|max:255|unique:products,code',
+            'code' => 'required|string|max:255' . $unique,
             'description' => 'required|string',
             'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ];

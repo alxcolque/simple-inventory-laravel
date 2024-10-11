@@ -14,6 +14,7 @@ class Detail extends Model
         'product_id',
         'price',
         'qty',
+        'unit',
     ];
 
     /**

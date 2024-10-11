@@ -36,7 +36,7 @@
     <div class="col-md-6 form-group row">
         <label for="phone" class="col-sm-3 col-form-label">Celular </span></label>
         <div class="col-sm-9">
-            <input type="text" class="form-control" id="phone" name="phone" placeholder="Contraseña"
+            <input type="text" class="form-control" id="phone" name="phone" placeholder="Telefono"
                 value="{{ old('phone', $client->phone ?? '') }}">
             @error('phone')
                 <small class="text-danger">{{ $message }}</small>

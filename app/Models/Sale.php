@@ -14,6 +14,7 @@ class Sale extends Model
         'client_id',
         'total',
         'status',
+        'iva',
     ];
 
 

@@ -17,6 +17,8 @@ return new class extends Migration
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
             $table->decimal('price', 8, 2)->nullable();
             $table->decimal('revenue', 8, 2)->nullable();
+            $table->string('unit');
+            $table->date('expiration_date')->nullable();
             $table->integer('qty')->unsigned()->nullable();
             $table->integer('stock')->nullable();
             $table->timestamps();

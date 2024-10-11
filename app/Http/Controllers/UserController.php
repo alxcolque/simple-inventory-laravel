@@ -88,7 +88,7 @@ class UserController extends Controller
             $user['avatar'] = $url;
         }
         $user->save();
-        return redirect()->route('users.index')->with('success', 'User updated successfully');
+        return redirect()->route('users.index')->with('success', 'Usuario actualizado exitosamente');
     }
 
     /**
@@ -99,7 +99,7 @@ class UserController extends Controller
         $user = User::find($id);
         FileManager::delete($user->avatar, 'key_image');
         $user->delete();
-        return redirect()->route('users.index')->with('success', 'User deleted successfully');
+        return redirect()->route('users.index')->with('success', 'Usuario eliminado exitosamente');
     }
     // muestra el perfil del usuario autenticado
     public function profile()

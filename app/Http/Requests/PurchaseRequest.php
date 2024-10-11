@@ -27,6 +27,8 @@ class PurchaseRequest extends FormRequest
             'price' => 'required|numeric',
             'price_sale' => 'required|numeric',
             'qty' => 'required|integer|min:1',
+            'unit' => 'required|string',
+            'expiration_date' => 'nullable|date',
         ];
     }
 }

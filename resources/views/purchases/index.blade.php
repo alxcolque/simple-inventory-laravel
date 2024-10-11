@@ -91,10 +91,8 @@
                                         {{ $filter == 'year' ? 'selected' : '' }}>Este año</option>
                                 </select>
 
-                                <button type="button" class="btn btn-primary btn-rounded btn-icon">
-                                    <i class="mdi mdi-plus"
-                                        onclick="window.location.href='{{ route('purchases.create') }}'"
-                                        style="font-size: 1.5rem"></i>
+                                <button type="button" class="btn btn-danger" onclick="window.location.href='{{ route('purchases.create') }}'">
+                                    <i class="mdi mdi-cart-plus"></i> Nueva Compra
                                 </button>
                                 <button type="button" onclick="window.print()" class="btn btn-dark btn-rounded btn-icon">
                                     <i class="mdi mdi-printer" style="font-size: 1.5rem"></i>

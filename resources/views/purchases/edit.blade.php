@@ -34,6 +34,30 @@
     <!-- partial:../../partials/_footer.html -->
 @endsection
 @section('css')
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 @endsection
 @section('js')
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<script>
+    /* Realiza una operacion entre los campos precio de venta menos el precio de compra, el resultado en la etiqueta revenue */
+    $('#price_sale, #price').on('change, keyup', function() {
+        var price = $('#price').val();
+        var price_sale = $('#price_sale').val();
+        var revenue = price_sale - price;
+        $('#revenue').html('Bs. '+revenue);
+    });
+
+</script>
+{{-- Al hacer clic sobre el input de unit sugerir unidades de medida de farmacia--}}
+<script>
+    //Cuando se edita en el campo unit sugerir unidades de medida
+    $('#unit').on('keyup change', function() {
+        var unit = $('#unit').val();
+        //autocomplete
+        var units = ['caja', 'tableta', 'unidad', 'gramos', 'mililitros', 'miligramos', 'microgramos'];
+        $('#unit').autocomplete({
+            source: units
+        });
+    });
+</script>
 @endsection

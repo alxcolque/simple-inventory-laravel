@@ -73,6 +73,8 @@ class PurchaseController extends Controller
             $existProductoInPurchase->revenue = $request->price_sale - $request->price;
             $existProductoInPurchase->stock = $newQty;
             $existProductoInPurchase->supplier_id = $request->supplier_id;
+            $existProductoInPurchase->unit = $request->unit;
+            $existProductoInPurchase->expiration_date = $request->expiration_date;
             $existProductoInPurchase->save();
             return redirect()->route('purchases.index')->with('success', 'Se añadió '. $request->qty .' productos a la compra');
         }
@@ -80,7 +82,7 @@ class PurchaseController extends Controller
         $purchase['revenue'] = $request->price_sale - $request->price;
         $purchase['stock'] = $request->qty;
         Purchase::create($purchase);
-        return redirect()->route('purchases.index')->with('success', 'Purchase created successfully');
+        return redirect()->route('purchases.index')->with('success', 'Compra creada exitosamente');
     }
 
     public function edit($id)
@@ -100,8 +102,10 @@ class PurchaseController extends Controller
         $purchase->qty = $request->qty;
         $purchase->stock = $request->qty;
         $purchase->revenue = $request->price_sale - $request->price;
+        $purchase->unit = $request->unit;
+        $purchase->expiration_date = $request->expiration_date;
         $purchase->save();
-        return redirect()->route('purchases.index')->with('success', 'Purchase updated successfully');
+        return redirect()->route('purchases.index')->with('success', 'Compra actualizada exitosamente');
     }
     // show method
     public function show($id)
@@ -113,6 +117,6 @@ class PurchaseController extends Controller
     {
         $purchase = Purchase::find($id);
         $purchase->delete();
-        return redirect()->route('purchases.index')->with('success', 'Purchase deleted successfully');
+        return redirect()->route('purchases.index')->with('success', 'Compra eliminada exitosamente');
     }
 }

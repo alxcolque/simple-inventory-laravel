@@ -69,6 +69,7 @@ class SaleController extends Controller
             $sale = Sale::create([
                 'seller_id' => Auth::user()->id,
                 'client_id' => $request->clientId,
+                'iva' => $request->ivaTotal,
                 'total' => $request->total,
                 'status' => 'pendiente',
             ]);
@@ -78,6 +79,7 @@ class SaleController extends Controller
                 $detail->product_id = $item['id'];
                 $detail->qty = $item['quantity'];
                 $detail->price = $item['price'];
+                $detail->unit = $item['unit'];
                 $detail->save();
                 // actualiza la columna stock de compras con la cantidad de productos vendidos.
                 $purchase = Purchase::where('product_id', $item['id'])->first();
@@ -100,7 +102,7 @@ class SaleController extends Controller
     {
         $sale = Sale::find($id);
         $sale->update($request->all());
-        return redirect()->route('sales.index')->with('success', 'Sale updated successfully');
+        return redirect()->route('sales.index')->with('success', 'Venta actualizada exitosamente');
     }
 
     public function show($id){
@@ -113,6 +115,6 @@ class SaleController extends Controller
     {
         $sale = Sale::find($id);
         $sale->delete();
-        return redirect()->route('sales.index')->with('success', 'Sale deleted successfully');
+        return redirect()->route('sales.index')->with('success', 'Venta eliminada exitosamente');
     }
 }
