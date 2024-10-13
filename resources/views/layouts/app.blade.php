@@ -28,6 +28,27 @@
     <!-- End layout styles -->
     <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" />
     {{-- @vite(['resources/sass/app.scss', 'resources/js/app.js']) --}}
+    <style>
+        .form-control,
+        .form-select,
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="number"],
+        textarea {
+            background-color: #ffffff !important;
+            /* Fondo blanco */
+            color: #333333 !important;
+            /* Texto oscuro para contraste */
+        }
+
+        /* Ajuste del color del placeholder para mejor visibilidad */
+        .form-control::placeholder,
+        input::placeholder,
+        textarea::placeholder {
+            color: #999999 !important;
+        }
+    </style>
 </head>
 
 <body>

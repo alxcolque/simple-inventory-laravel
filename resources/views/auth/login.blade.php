@@ -18,7 +18,26 @@
     <link rel="stylesheet" href="../../assets/css/style.css">
     <!-- End layout styles -->
     <link rel="shortcut icon" href="../../assets/images/favicon.png" />
-    {{-- Los letras del inputs mientras se escribe deben ser claras --}}
+    {{-- Los letras de inputs mientras se escribe deben ser claras --}}
+    <style>
+        .form-control,
+            .form-select,
+            input[type="text"],
+            input[type="email"],
+            input[type="password"],
+            input[type="number"],
+            textarea {
+                background-color: #ffffff !important; /* Fondo blanco */
+                color: #333333 !important; /* Texto oscuro para contraste */
+            }
+
+            /* Ajuste del color del placeholder para mejor visibilidad */
+            .form-control::placeholder,
+            input::placeholder,
+            textarea::placeholder {
+                color: #999999 !important;
+        }
+    </style>
 </head>
 
 <body>
