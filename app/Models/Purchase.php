@@ -18,6 +18,7 @@ class Purchase extends Model
         'stock',
         'unit',
         'expiration_date',
+        'iva',
     ];
 
     /**

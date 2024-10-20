@@ -64,22 +64,29 @@ class PurchaseController extends Controller
 
     public function store(PurchaseRequest $request)
     {
+        //dd($request->iva);
+        //return;
         // si existe el producto solo se debe actualizar el stock y la cantidad
-        $existProductoInPurchase = Purchase::where('product_id', $request->product_id)->first();
+        /*$existProductoInPurchase = Purchase::where('product_id', $request->product_id)->first();
         if($existProductoInPurchase){
             $newQty = $request->qty + $existProductoInPurchase->qty;
             $existProductoInPurchase->qty = $newQty;
             $existProductoInPurchase->price = $request->price;
-            $existProductoInPurchase->revenue = $request->price_sale - $request->price;
+            $existProductoInPurchase->revenue = ($request->price_sale * $request->price) / 100;
+            $existProductoInPurchase->iva = $request->iva;
             $existProductoInPurchase->stock = $newQty;
             $existProductoInPurchase->supplier_id = $request->supplier_id;
             $existProductoInPurchase->unit = $request->unit;
             $existProductoInPurchase->expiration_date = $request->expiration_date;
             $existProductoInPurchase->save();
             return redirect()->route('purchases.index')->with('success', 'Se añadió '. $request->qty .' productos a la compra');
-        }
+        }*/
         $purchase = $request->all();
-        $purchase['revenue'] = $request->price_sale - $request->price;
+        //return;
+        if($request->iva== 0){
+            $purchase['iva'] = true;
+        }
+        $purchase['revenue'] = ($request->price_sale * $request->price) / 100;
         $purchase['stock'] = $request->qty;
         Purchase::create($purchase);
         return redirect()->route('purchases.index')->with('success', 'Compra creada exitosamente');
@@ -101,7 +108,8 @@ class PurchaseController extends Controller
         $purchase->price = $request->price;
         $purchase->qty = $request->qty;
         $purchase->stock = $request->qty;
-        $purchase->revenue = $request->price_sale - $request->price;
+        $purchase->iva = $request->iva;
+        $purchase->revenue = ($request->price_sale * $request->price) / 100;
         $purchase->unit = $request->unit;
         $purchase->expiration_date = $request->expiration_date;
         $purchase->save();

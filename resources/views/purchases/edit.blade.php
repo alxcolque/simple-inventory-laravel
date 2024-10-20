@@ -43,7 +43,7 @@
     $('#price_sale, #price').on('change, keyup', function() {
         var price = $('#price').val();
         var price_sale = $('#price_sale').val();
-        var revenue = price_sale - price;
+        var revenue = (price * price_sale / 100);
         $('#revenue').html('Bs. '+revenue);
     });
 

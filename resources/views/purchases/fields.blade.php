@@ -55,8 +55,16 @@
 </div>
 <!-- Tres columnas para precio de compra, precio de venta y stock -->
 <div class="row">
+    <!-- campo iva -->
+    <div class="col-md-3 form-group row">
+        <label for="iva" class="col-form-label">Marca si es con IVA</label>
+        <div class="col-sm-12">
+            {{-- Añadir un checkbox para el campo iva --}}
+            <input type="checkbox" class="form-check-input" id="iva" name="iva" placeholder="IVA" value="{{ old('iva', $purchase->iva ?? '0') }}" {{ old('iva', $purchase->iva ?? '0') ? 'checked' : '' }}>
+        </div>
+    </div>
     <!-- campo precio de compra -->
-    <div class="col-md-4 form-group row">
+    <div class="col-md-3 form-group row">
         <label for="price" class="col-form-label">Precio de compra <span class="text-danger">*</span></label>
         <div class="col-sm-12">
             <input type="decimal" min="0" class="form-control" id="price" name="price" placeholder="Precio de compra"
@@ -67,10 +75,10 @@
         </div>
     </div>
     <!-- campo price_sale -->
-    <div class="col-md-4 form-group row">
-        <label for="price_sale" class="col-form-label">Precio de venta <span class="text-danger">*</span></label>
+    <div class="col-md-3 form-group row">
+        <label for="price_sale" class="col-form-label">Precio de venta en (%) <span class="text-danger">*</span></label>
         <div class="col-sm-12">
-            <input type="decimal" min="0" class="form-control" id="price_sale" name="price_sale" placeholder="price_sale"
+            <input type="decimal" min="0" class="form-control" id="price_sale" name="price_sale" placeholder="Precio de venta (%)"
                 value="{{ old('price_sale', isset($purchase)? $purchase->price + $purchase->revenue: '0') }}"
             >
             @error('price_sale')
@@ -79,7 +87,7 @@
         </div>
     </div>
     <!-- campo Ganancia -->
-    <div class="col-md-4 form-group row">
+    <div class="col-md-3 form-group row">
         <label for="revenue" class="col-form-label">Ganancia</label>
         <div class="col-sm-12">
             <b id="revenue" class="text-success">Bs. 0.00</b>
