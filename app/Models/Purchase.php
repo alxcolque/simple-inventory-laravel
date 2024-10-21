@@ -19,6 +19,7 @@ class Purchase extends Model
         'unit',
         'expiration_date',
         'iva',
+        'balance',
     ];
 
     /**

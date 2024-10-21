@@ -26,7 +26,7 @@ class PurchaseRequest extends FormRequest
             'supplier_id' => 'required|integer',
             'price' => 'required|numeric',
             'price_sale' => 'required|numeric',
-            'qty' => 'required|integer|min:1',
+            'qty' => 'required|numeric',
             'unit' => 'required|string',
             'expiration_date' => 'nullable|date',
             //'iva' => 'boolean',

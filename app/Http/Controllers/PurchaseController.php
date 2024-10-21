@@ -83,12 +83,29 @@ class PurchaseController extends Controller
         }*/
         $purchase = $request->all();
         //return;
+
+        $currentStock = Product::find($request->product_id)->stock();
+        $currentBalance = Product::find($request->product_id)->balance();
         if($request->iva== 0){
             $purchase['iva'] = true;
         }
-        $purchase['revenue'] = ($request->price_sale * $request->price) / 100;
-        $purchase['stock'] = $request->qty;
-        Purchase::create($purchase);
+        $revenue = ($request->price_sale * $request->price) / 100;
+        $purchase['revenue'] = $revenue;
+        $purchase['stock'] = $currentStock + $request->qty;
+        $purchase['balance'] = $currentBalance + ($request->price * $request->qty);
+        $newPurchase = Purchase::create($purchase);
+
+        $kardex = [];
+        $kardex['product_id'] = $newPurchase->product_id;
+        $kardex['operation_date'] = $newPurchase->created_at;
+        $kardex['detail'] = 'Compra '.$request->comment;
+        $kardex['product_entry'] = $purchase['stock'];
+        $kardex['product_stock'] = $currentStock + $request->qty;
+        $kardex['cost_unit'] = $purchase['price'];
+        $kardex['amount_entry'] = $purchase['price'] * $purchase['qty'];
+        $kardex['amount_stock'] = ($purchase['price'] * $purchase['qty']) + ($currentBalance);
+        KardexController::kardeStore($kardex);
+
         return redirect()->route('purchases.index')->with('success', 'Compra creada exitosamente');
     }
 

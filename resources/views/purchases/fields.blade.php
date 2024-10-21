@@ -28,7 +28,7 @@
     </div>
     {{-- Campo unit --}}
     <div class="col-md-3 form-group">
-        <label for="unit" class="col-form-label">Unidad <span class="text-danger">*</span></label>
+        <label for="unit" class="col-form-label">Unidad de medida<span class="text-danger">*</span></label>
         <div class="col-sm-9">
             <input type="text" class="form-control" id="unit" name="unit" placeholder="Unidad"
                 value="{{ old('unit', $purchase->unit ?? '') }}">
@@ -45,7 +45,7 @@
     <div class="col-md-3 form-group">
         <label for="qty" class="col-form-label">Cantidad <span class="text-danger">*</span></label>
         <div class="col-sm-9">
-            <input type="number" class="form-control" id="qty" name="qty" placeholder="Cantidad"
+            <input type="decimal" min="0" class="form-control" id="qty" name="qty" placeholder="Cantidad"
                 value="{{ old('qty', $purchase->qty ?? '1') }}">
             @error('qty')
                 <small class="text-danger">{{ $message }}</small>
@@ -116,5 +116,12 @@
         @error('supplier_id')
             <small class="text-danger">{{ $message }}</small>
         @enderror
+    </div>
+</div>
+{{-- Comentario de compra --}}
+<div class="form-group row">
+    <label for="comment" class="col-sm-3 col-form-label">Comentario de la compra (Opcional)</label>
+    <div class="col-sm-9">
+        <input type="text" class="form-control" id="comment" name="comment" placeholder="Comentario" value="{{ old('comment', $purchase->comment ?? '') }}">
     </div>
 </div>

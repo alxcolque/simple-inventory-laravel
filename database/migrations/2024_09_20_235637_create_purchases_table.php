@@ -19,8 +19,8 @@ return new class extends Migration
             $table->decimal('revenue', 8, 2)->nullable();
             $table->string('unit');
             $table->date('expiration_date')->nullable();
-            $table->integer('qty')->unsigned()->nullable();
-            $table->integer('stock')->nullable();
+            $table->decimal('qty', 10, 2)->nullable();
+            $table->decimal('stock', 10, 2)->nullable();
             $table->timestamps();
         });
     }

@@ -25,4 +25,24 @@ class Product extends Model
         return $this->belongsTo(Category::class);
     }
 
+    public function kardexes()
+    {
+        return $this->hasMany(Kardex::class);
+    }
+
+    public function purchases()
+    {
+        return $this->hasMany(Purchase::class);
+    }
+
+    public function stock()
+    {
+        return $this->purchases()->sum('stock');
+    }
+
+    public function balance()
+    {
+        return $this->purchases()->sum('balance');
+    }
+
 }

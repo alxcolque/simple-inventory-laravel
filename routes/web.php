@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\KardexController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SaleController;
@@ -37,6 +38,10 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('clients', ClientController::class)->names('clients');
     Route::resource('sales', SaleController::class)->names('sales');
     Route::resource('purchases', PurchaseController::class)->names('purchases');
+    //Route::resource('kardexes', KardexController::class)->names('kardexes');
+    /* store kardex */
+    Route::post('/kardexes', [KardexController::class, 'store'])->name('kardexes.store');
+    Route::get('/kardexes/{id}', [KardexController::class, 'getKardex'])->name('get-kardexes.show');
 
     /* Route::resource('inventories', InventoryController::class)->names('inventories');
     Route::resource('reports', ReportController::class)->names('reports'); */

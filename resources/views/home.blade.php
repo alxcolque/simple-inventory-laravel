@@ -147,6 +147,9 @@
                                                 <button type="button"
                                                     onclick="selectProduct('{{ $purchase->product->id }}','{{ $purchase->product->name }}','{{ $purchase->product->image }}', '{{ $purchase->price + $purchase->revenue }}', '{{ $purchase->stock }}')"
                                                     class="btn btn-success"><i class="mdi mdi-cart"></i></button>
+                                                {{-- Show kardex --}}
+                                                <a href="{{ route('get-kardexes.show', ['id' => $purchase->product->id]) }}" class="btn btn-info"><i class="mdi mdi-eye"></i></a>
+
                                             </td>
                                         </tr>
                                     @endforeach
