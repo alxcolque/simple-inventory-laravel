@@ -31,7 +31,7 @@
         <label for="unit" class="col-form-label">Unidad de medida<span class="text-danger">*</span></label>
         <div class="col-sm-9">
             <input type="text" class="form-control" id="unit" name="unit" placeholder="Unidad"
-                value="{{ old('unit', $purchase->unit ?? '') }}">
+                value="{{ old('unit', $purchase->unit ?? 'Unidad') }}">
         </div>
     </div>
     {{-- Fecha de expiracion --}}
@@ -60,7 +60,7 @@
         <label for="iva" class="col-form-label">Marca si es con IVA</label>
         <div class="col-sm-12">
             {{-- Añadir un checkbox para el campo iva --}}
-            <input type="checkbox" class="form-check-input" id="iva" name="iva" placeholder="IVA" value="{{ old('iva', $purchase->iva ?? '0') }}" {{ old('iva', $purchase->iva ?? '0') ? 'checked' : '' }}>
+            <input type="checkbox" class="form-check-input" id="iva" name="iva" placeholder="IVA" value="{{ old('iva', $purchase->iva ?? '0') }}" {{ old('iva', $purchase->iva ?? '0') ? 'checked' : 'checked' }}>
         </div>
     </div>
     <!-- campo precio de compra -->
@@ -75,7 +75,7 @@
         </div>
     </div>
     <!-- campo price_sale -->
-    <div class="col-md-3 form-group row">
+    <div class="col-md-3 form-group row" hidden>
         <label for="price_sale" class="col-form-label">Precio de venta en (%) <span class="text-danger">*</span></label>
         <div class="col-sm-12">
             <input type="decimal" min="0" class="form-control" id="price_sale" name="price_sale" placeholder="Precio de venta (%)"
@@ -86,8 +86,7 @@
             @enderror
         </div>
     </div>
-    <!-- campo Ganancia -->
-    <div class="col-md-3 form-group row">
+    <div class="col-md-3 form-group row" hidden>
         <label for="revenue" class="col-form-label">Ganancia</label>
         <div class="col-sm-12">
             <b id="revenue" class="text-success">Bs. 0.00</b>

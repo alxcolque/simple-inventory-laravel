@@ -89,6 +89,7 @@
                         <thead>
                             <tr>
                                 <th>Producto</th>
+                                <th>IVA</th>
                                 <th>Precio</th>
                                 <th>Cantidad</th>
                                 <th>Subtotal</th>
@@ -102,10 +103,7 @@
                         <tfoot>
                             <tr>
                                 <td> </td>
-                                <td> <b>Con IVA:</b></td>
-                                <td class="text-center">
-                                    <input class="form-check-input" type="checkbox" id="iva" name="iva">
-                                </td>
+                                <td colspan="2"> <b>Con IVA:</b></td>
                                 <td>
                                     <h4 id="totalIva">0</h4>
                                 </td>

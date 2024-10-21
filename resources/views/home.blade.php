@@ -141,14 +141,15 @@
                                             </td>
                                             <td> {{ $purchase->product->category->title }} </td>
                                             <td> {{ $purchase->stock }} </td>
-                                            <td> {{ $purchase->price + $purchase->revenue }} </td>
+                                            <td> {{ $purchase->price }} </td>
                                             <td class="no-print">
                                                 <!-- añadir boton de añadir al carrrito -->
                                                 <button type="button"
-                                                    onclick="selectProduct('{{ $purchase->product->id }}','{{ $purchase->product->name }}','{{ $purchase->product->image }}', '{{ $purchase->price + $purchase->revenue }}', '{{ $purchase->stock }}')"
+                                                    onclick="selectProduct('{{ $purchase->id }}','{{ $purchase->product->id }}','{{ $purchase->product->name }}','{{ $purchase->product->image }}', '{{ $purchase->price }}', '{{ $purchase->stock }}')"
                                                     class="btn btn-success"><i class="mdi mdi-cart"></i></button>
                                                 {{-- Show kardex --}}
-                                                <a href="{{ route('get-kardexes.show', ['id' => $purchase->product->id]) }}" class="btn btn-info"><i class="mdi mdi-eye"></i></a>
+                                                <a href="{{ route('get-kardexes.show', ['id' => $purchase->product->id]) }}"
+                                                    class="btn btn-info"><i class="mdi mdi-eye"></i></a>
 
                                             </td>
                                         </tr>
@@ -170,7 +171,7 @@
                 <div class="card">
                     <div class="card-body">
 
-                        <h4 class="card-title">Total Stock: {{$total_beneficio}}</h4>
+                        <h4 class="card-title">Total Stock: {{ $total_beneficio }}</h4>
                         <canvas id="stockCanva" style="height: 311px; display: block; width: 623px;" width="623"
                             height="311" class="chartjs-render-monitor"></canvas>
                     </div>
@@ -181,8 +182,8 @@
                     <div class="card-body">
 
                         <h4 class="card-title">Ventas por categoría</h4>
-                        <canvas id="pieChartByCategory" style="height: 311px; display: block; width: 623px;" width="623"
-                            height="311" class="chartjs-render-monitor"></canvas>
+                        <canvas id="pieChartByCategory" style="height: 311px; display: block; width: 623px;"
+                            width="623" height="311" class="chartjs-render-monitor"></canvas>
                     </div>
                 </div>
             </div>
@@ -209,7 +210,8 @@
 @endsection
 @section('modals')
     <!-- Modal para agregar cantidad de producto al carrito -->
-    <div class="modal fade" id="addCartQuantityModal" tabindex="-1" aria-labelledby="addCartQuantityModalLabel" aria-hidden="true">
+    <div class="modal fade" id="addCartQuantityModal" tabindex="-1" aria-labelledby="addCartQuantityModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -217,37 +219,59 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="addCartQuantity">
-                <div class="modal-body">
-                    <p>¿Cuántas unidades desea agregar al carrito?</p>
-                    {{-- Aumentar de tamaño de campo de cantidad --}}
-                    <input type="number" class="form-control text-dark" id="quantity" min="1" value="1"
-                    style="width: 100px;font-size: 1.2rem; background-color: #f0f0f0;">
-                    {{-- input de unidades --}}
-                    <p class="mt-2">Selecciona la unidad de medida</p>
-                    <div class="mt-2">
-                        {{-- units = ['caja', 'tableta', 'frasco', 'kilo', 'quintal', 'tonelada', 'unidad', 'gramos', 'mililitros', 'miligramos', 'microgramos']; --}}
-                        <select class="form-select" id="unit" name="unit" required>
-                            <option value="">Selecciona una unidad</option>
-                            <option value="unidad">Unidad</option>
-                            <option value="caja">Caja</option>
-                            <option value="tableta">Tableta</option>
-                            <option value="frasco">Frasco</option>
-                            <option value="kilo">Kilo</option>
-                            <option value="quintal">Quintal</option>
-                            <option value="tonelada">Tonelada</option>
-                            <option value="unidad">Unidad</option>
-                            <option value="gramos">Gramos</option>
-                            <option value="mililitros">Mililitros</option>
-                            <option value="miligramos">Miligramos</option>
-                            <option value="microgramos">Microgramos</option>
-                        </select>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p>¿Cuántas unidades?</p>
+                                {{-- Aumentar de tamaño de campo de cantidad --}}
+                                <input type="number" class="form-control text-dark" id="quantity" min="1"
+                                    value="1" style="width: 100px;font-size: 1.2rem; background-color: #f0f0f0;">
+                            </div>
+                            <div class="col-md-6">
+                                {{-- input de unidades --}}
+                                <p class="mt-2">Selecciona la unidad de medida</p>
+                                <div class="mt-2">
+                                    {{-- units = ['caja', 'tableta', 'frasco', 'kilo', 'quintal', 'tonelada', 'unidad', 'gramos', 'mililitros', 'miligramos', 'microgramos']; --}}
+                                    <select class="form-select" id="unit" name="unit" required>
+                                        <option value="unidad">Unidad</option>
+                                        <option value="jarabe">Jarabe</option>
+                                        <option value="ampolla">Ampolla</option>
+                                        <option value="caja">Caja</option>
+                                        <option value="tableta">Tableta</option>
+                                        <option value="frasco">Frasco</option>
+                                        <option value="kilo">Kilo</option>
+                                        <option value="quintal">Quintal</option>
+                                        <option value="tonelada">Tonelada</option>
+                                        <option value="unidad">Unidad</option>
+                                        <option value="gramos">Gramos</option>
+                                        <option value="mililitros">Mililitros</option>
+                                        <option value="miligramos">Miligramos</option>
+                                        <option value="microgramos">Microgramos</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        {{-- 2 columnas para iva y revenue --}}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="iva" class="col-form-label">Marca si es con IVA</label>
+                                <input type="checkbox" class="form-check-input mt-2 me-2" id="iva" name="iva"
+                                    placeholder="IVA" value="{{ old('iva', $purchase->iva ?? '0') }}"
+                                    {{ old('iva', $purchase->iva ?? '0') ? 'checked' : 'checked' }}>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="revenue" class="col-form-label">Ganancia en porcentaje (%)</label>
+                                <input type="number" class="form-control mt-2 text-dark" id="revenue" min="0"
+                                    value="50" style="width: 100px;font-size: 1.2rem; background-color: #f0f0f0;">
+                            </div>
+                        </div>
+
                     </div>
 
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Agregar</button>
-                </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Agregar</button>
+                    </div>
                 </form>
             </div>
         </div>
@@ -291,52 +315,73 @@
             XLSX.writeFile(wb, 'compra_' + fileName);
         });
         /* Crar el grafico de stock */
-        var forSale = '{{$total_stock}}';
+        var forSale = '{{ $total_stock }}';
         // alternativa para obtener datos de la variable de php
         // var forSale = document.getElementById('forSale').value;
 
-        var sold = {{$total_beneficio - $total_stock}}
+        var sold = {{ $total_beneficio - $total_stock }}
         //Recupera la sonculta de la variable $categories_sales y la convierte en arreglo de javascript
         //Uncaught SyntaxError: Expected property name or '}' in JSON at position 2
         var categoriesSales = JSON.parse('{!! json_encode($categories_sales) !!}');
 
-        //al dar click en el boton de selectProduct, se abre un modal con el producto seleccionado para agregar la cantidad
-        var productId;
+        var purchaseId;
+        var productId2;
         var productName;
         var productImage;
         var productPrice;
         var productStock;
-        function selectProduct(id, name, image, price, stock){
-            productId = id;
+
+        function selectProduct(id, productId, name, image, price, stock) {
+            purchaseId = id;
+            productId2 = productId;
             productName = name;
             productImage = image;
             productPrice = price;
             productStock = stock;
+
+            var titleProduct = name + ' : Bs. ' + price;
+
+            // colocar el titutlo del modal con el nombre del producto
+            $('#addCartQuantityModalLabel').text(titleProduct);
             $('#addCartQuantityModal').modal('show');
         }
 
         //al dar click en el boton de agregar, se agrega el producto al carrito
-        document.getElementById('addCartQuantity').addEventListener('submit', function(e){
+        document.getElementById('addCartQuantity').addEventListener('submit', function(e) {
             e.preventDefault();
             //console.log(productId, productName, productImage, productPrice, productStock);
             //obtener la cantidad de productos a agregar
             var quantity = document.getElementById('quantity').value;
             var unit = document.getElementById('unit').value;
-            if(quantity == 0){
+
+
+            if (quantity == 0) {
                 return;
             }
-            if(quantity > productStock){
+            if (quantity > productStock) {
                 alert('No hay suficiente stock disponible');
                 //$('#addCartQuantityModal').modal('hide');
                 return;
-            }else{
-                addToCart(productId, productName, productImage, productPrice, productStock, quantity, unit);
+            } else {
+                //if is checked iva
+                var iva = document.getElementById('iva').checked;
+                var revenue = document.getElementById('revenue').value;
+                if (iva) {
+                    iva = true;
+                } else {
+                    iva = false;
+                }
+                var priceWithRevenue = productPrice * parseInt(revenue) / 100;
+                var priceTotal = parseInt(productPrice) + priceWithRevenue
+                if (iva) {
+                    priceTotal = priceTotal * 1.13;
+                }
+
+                addToCart(purchaseId, productId2, productName, productImage, priceTotal, productStock, quantity, unit, iva);
                 $('#addCartQuantityModal').modal('hide');
             }
 
         });
-
     </script>
     <script src="{{ asset('js/chart-home.js') }}"></script>
-
 @endsection

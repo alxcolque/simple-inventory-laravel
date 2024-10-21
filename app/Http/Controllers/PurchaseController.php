@@ -99,7 +99,7 @@ class PurchaseController extends Controller
         $kardex['product_id'] = $newPurchase->product_id;
         $kardex['operation_date'] = $newPurchase->created_at;
         $kardex['detail'] = 'Compra '.$request->comment;
-        $kardex['product_entry'] = $purchase['stock'];
+        $kardex['product_entry'] = $request->qty;
         $kardex['product_stock'] = $currentStock + $request->qty;
         $kardex['cost_unit'] = $purchase['price'];
         $kardex['amount_entry'] = $purchase['price'] * $purchase['qty'];

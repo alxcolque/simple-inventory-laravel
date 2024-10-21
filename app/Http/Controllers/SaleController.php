@@ -16,26 +16,26 @@ class SaleController extends Controller
     {
         $filter = $request->get('filter');
         $search = $request->get('search');
-        if($search){
+        if ($search) {
             // Filtra las compras por el nombre del producto y las guarda en la variable $sales
-            $sales = Sale::whereHas('client', function($query) use ($search){
-                $query->where('name', 'like', '%'.$search.'%');
+            $sales = Sale::whereHas('client', function ($query) use ($search) {
+                $query->where('name', 'like', '%' . $search . '%');
             })->paginate(10);
         }
         // Filtra por dia, semana, mes o año y las guarda en la variable $sales
-        if($filter){
-            if($filter == 'day'){
+        if ($filter) {
+            if ($filter == 'day') {
                 $sales = Sale::whereDate('created_at', date('Y-m-d'))->paginate(10);
-            }else if($filter == 'week'){
+            } else if ($filter == 'week') {
                 $sales = Sale::whereBetween('created_at', [date('Y-m-d', strtotime('-1 week')), date('Y-m-d')])->paginate(10);
-            }else if($filter == 'month'){
+            } else if ($filter == 'month') {
                 $sales = Sale::whereMonth('created_at', date('m'))->paginate(10);
-            }else if($filter == 'year'){
+            } else if ($filter == 'year') {
                 $sales = Sale::whereYear('created_at', date('Y'))->paginate(10);
-            }else{
+            } else {
                 $sales = Sale::paginate(10);
             }
-        }else{
+        } else {
             $sales = Sale::paginate(10);
         }
         return view('sales.index', compact('sales', 'search', 'filter'));
@@ -50,22 +50,25 @@ class SaleController extends Controller
     {
         $cart = $request->cart;
         // de cart fitra en un arreglo los id
-        $productIds = array_column($cart, 'id');
+        $productIds = array_column($cart, 'productId');
         // Busca los productos por los id
         $products = Product::whereIn('id', $productIds)->get();
         //valida en la tabla de compras que la cantidad sea menor
+        //dd($cart);
+        //return;
         foreach ($cart as $item) {
-            $product = $products->where('id', $item['id'])->first();
+            $product = $products->where('id', $item['productId'])->first();
             // una consulta que sume la columna stock en la tabla purchases del producto en especifico.
             $countStockPurchase = Purchase::where('product_id', $product->id)->sum('stock');
-            if($countStockPurchase < $item['quantity']){
-                return response()->json(['message' => 'Stock insuficiente', 'id'=>'0'], 400);
+            //$countStockPurchase = Purchase::find($item['purchaseId']);
+            if ($item['quantity'] > $countStockPurchase) {
+                return response()->json(['message' => 'Stock insuficiente', 'id' => '0'], 400);
             }
         }
         // Valida que los productos existan
-        if(count($products) != count($cart)){
-            return response()->json(['message' => 'Producto no encontrado', 'id'=>'0'], 404);
-        }else{
+        if (count($products) <= 0) {
+            return response()->json(['message' => 'Producto no encontrado', 'id' => '0'], 404);
+        } else {
             $sale = Sale::create([
                 'seller_id' => Auth::user()->id,
                 'client_id' => $request->clientId,
@@ -73,23 +76,57 @@ class SaleController extends Controller
                 'total' => $request->total,
                 'status' => 'pendiente',
             ]);
+
             foreach ($cart as $item) {
+                //Cardex actualiza el stock y balance
+                $currentStock = Product::find($item['productId'])->stock(); //2170
+                $currentBalance = Product::find($item['productId'])->balance();
+                // actualiza la columna stock de compras con la cantidad de productos vendidos.
+                $purchase = Purchase::where('product_id', $item['productId'])->where('stock', '>', 0)->get();
+                $strCostUnit = '';
+                $balanceSale = 0;
+                $currentQuantity = $item['quantity']; //1280
+                foreach ($purchase as $p) {
+                    if ($currentQuantity <= $p->stock) { //1280 <= 850
+                        $currentQuantity = $currentQuantity - $p->stock; //1280 - 850 = 430
+                        $balanceSale = $balanceSale + ($currentQuantity * $p->price); //0 + (430 * 24.36) = 10474.8
+                        $strCostUnit = $strCostUnit . $p->price; //0 + 24.36 = 24.36
+                        $p->stock =  $p->stock - $currentQuantity; //850 - 430 = 420
+                        $p->save();
+                    } else if ($currentQuantity <= $currentStock) { //1280 <= 2170
+                        $currentQuantity = $currentQuantity - $p->stock; //1280 - 850 = 430
+                        $balanceSale = $balanceSale + ($p->stock * $p->price); //430 + (850 * 25) = 6550
+                        $strCostUnit = $strCostUnit . $p->price . '|'; //10 + 25 = 10|25
+                        $p->stock = $p->qty - $p->stock; //850 - 850 = 0
+                        $p->save();
+                    } else {
+                        return response()->json(['message' => 'Stock insuficiente', 'id' => '0'], 400);
+                    }
+                }
+                // guarda el detalle de la venta
+
                 $detail = new Detail();
                 $detail->sale_id = $sale->id;
-                $detail->product_id = $item['id'];
+                $detail->product_id = $item['productId'];
                 $detail->qty = $item['quantity'];
                 $detail->price = $item['price'];
                 $detail->unit = $item['unit'];
                 $detail->save();
-                // actualiza la columna stock de compras con la cantidad de productos vendidos.
-                $purchase = Purchase::where('product_id', $item['id'])->first();
-                //$purchase->stock = $purchase->stock - $item['quantity'];
-                $purchase->stock = $purchase->stock - $item['quantity'];
 
-                $purchase->save();
+                // actualiza el kardex
 
+                $kardex = [];
+                $kardex['product_id'] = $item['productId'];
+                $kardex['operation_date'] = $detail->created_at;
+                $kardex['detail'] = 'Venta';
+                $kardex['product_exit'] = $item['quantity'];
+                $kardex['product_stock'] = $currentStock;
+                $kardex['cost_unit'] = $strCostUnit;
+                $kardex['amount_exit'] = $balanceSale;
+                $kardex['amount_stock'] = $currentBalance;
+                KardexController::kardeStore($kardex);
             }
-            return response()->json(['message' => 'Venta registrado con éxito', 'id'=>$sale->id], 200);
+            return response()->json(['message' => 'Venta registrado con éxito', 'id' => $sale->id], 200);
         }
     }
     public function edit($id)
@@ -105,7 +142,8 @@ class SaleController extends Controller
         return redirect()->route('sales.index')->with('success', 'Venta actualizada exitosamente');
     }
 
-    public function show($id){
+    public function show($id)
+    {
         $sale = Sale::find($id);
         $detail = Detail::where('sale_id', $id)->get();
         return view('sales.show', compact('sale', 'detail'));

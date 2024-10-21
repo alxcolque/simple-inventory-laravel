@@ -3,24 +3,27 @@
 // Al eliminar un producto del carrito, se debe eliminar del carrito y actualizar la vista.
 // Al pagar el carrito, se debe limpiar el carrito y mostrar un mensaje de éxito.
 // Obtén una referencia al botón "Agregar al carrito"
-function addToCart(id, name, image, price, stock, quantity, unit) {
+function addToCart(purchaseId, productId, name, image, price, stock, quantity, unit, iva) {
+
     if (stock <= 0) {
         alert('Producto sin stock');
         //Toast.create("Error", 'Producto sin stock', TOAST_STATUS.SUCCESS, 5000);
         return;
     }
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    let product = cart.find(p => p.id == id);
+    let product = cart.find(p => p.purchaseId == purchaseId);
     if (product) {
         product.quantity++;
     } else {
         cart.push({
-            id,
+            purchaseId,
+            productId,
             name,
             image,
             price,
             quantity,
-            unit
+            unit,
+            iva
         });
     }
     localStorage.setItem('cart', JSON.stringify(cart));
@@ -61,15 +64,20 @@ function openCartModal() {
 function showCart() {
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
     let tbody = document.getElementById('cart-items');
+    var amountIva = 0;
     tbody.innerHTML = '';
     cart.forEach(product => {
+        if (product.iva) {
+            amountIva += product.price * 0.13;
+        }
         let tr = document.createElement('tr');
         tr.innerHTML = `
                 <td>
                     <img src="${product.image}" width="50" />
                     ${product.name}
                 </td>
-                <td>${product.price}</td>
+                <td>${product.iva ? 'Si' : 'No'}</td>
+                <td>${product.price.toFixed(2)}</td>
                 <td>${product.quantity}</td>
                 <td>${(product.price * product.quantity).toFixed(2)}</td>
                 <td>
@@ -78,28 +86,12 @@ function showCart() {
                 `;
         tbody.appendChild(tr);
     });
-
+    document.getElementById('totalIva').textContent = (amountIva).toFixed(2);
     //Calcula el total
     let total = cart.reduce((acc, p) => acc + p.price * p.quantity, 0);
-    //Si es iva es true, se calcula el total con iva
-    let iva = localStorage.getItem('iva');
-    //console.log(iva);
 
-    if (iva === 'true' || iva == 0) {
-        total = total * 1.13;
-        //checked el checkbox de iva
-        document.getElementById('iva').checked = true;
-        document.getElementById('totalIva').textContent = (total * 0.13).toFixed(2);
-
-    } else {
-        total = cart.reduce((acc, p) => acc + p.price * p.quantity, 0);
-        document.getElementById('iva').checked = false;
-        document.getElementById('totalIva').textContent = 0;
-        localStorage.setItem('iva', false);
-
-    }
     localStorage.setItem('total', total);
-    //Mostrar el total
+    localStorage.setItem('amountIva', amountIva);
     // acortar a dos decimales
     total = total.toFixed(2);
     document.getElementById('total').textContent = total;
@@ -108,11 +100,7 @@ function showCart() {
     document.getElementById('clientNameCompra').textContent = clientNameCompra;
 }
 
-// Al marcar y desmarcar el checkbox iva, se debe guardar en el local storage.
-document.getElementById('iva').addEventListener('change', function () {
-    localStorage.setItem('iva', this.checked);
-    showCart();
-});
+
 
 function asignClient(clientId, clientName) {
     // Los parametros guarda en una variable del storage para recuperar en el pago
@@ -126,7 +114,7 @@ function clearLocalStorage() {
     localStorage.removeItem('clientId');
     localStorage.removeItem('clientName');
     localStorage.removeItem('total');
-    localStorage.removeItem('iva');
+    localStorage.removeItem('amountIva');
     showCart();
 }
 function removeFromCart(id) {
@@ -141,22 +129,18 @@ function removeFromCart(id) {
     localStorage.setItem('cart', JSON.stringify(cart));
     showCart();
 }
-// una funcion cuando se de clic en payButton es el boton de pagar del modal
 document.getElementById('payButton').addEventListener('click', function () {
     // recupera el carrito del local storage
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+
     // recupera el cliente del local storage
     let clientId = localStorage.getItem('clientId');
-    // recupera el nombre del cliente del local storage
-    let clientName = localStorage.getItem('clientName');
     // recupera el total del local storage
     let total = localStorage.getItem('total');
     // recupera el iva del local storage
-    let iva = localStorage.getItem('iva');
-    let ivaTotal = 0.00;
-    if (iva == 'true') {
-        ivaTotal = total * 0.13;
-    }
+    let ivaTotal = localStorage.getItem('amountIva');
+
     //console.log(iva);
     // si no hay productos en el carrito
     if (cart.length == 0) {
