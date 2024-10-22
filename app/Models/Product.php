@@ -45,4 +45,23 @@ class Product extends Model
         return $this->purchases()->sum('balance');
     }
 
+    public function currentProductEntry()
+    {
+        return $this->kardexes()->sum('product_entry');
+    }
+
+    public function currentProductExit()
+    {
+        return $this->kardexes()->sum('product_exit');
+    }
+
+    public function currentEntry()
+    {
+        return $this->kardexes()->sum('amount_entry');
+    }
+
+    public function currentExit()
+    {
+        return $this->kardexes()->sum('amount_exit');
+    }
 }

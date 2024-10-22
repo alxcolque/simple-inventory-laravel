@@ -84,15 +84,18 @@ class PurchaseController extends Controller
         $purchase = $request->all();
         //return;
 
-        $currentStock = Product::find($request->product_id)->stock();
-        $currentBalance = Product::find($request->product_id)->balance();
+        $qtyProductEntry = Product::find($request->product_id)->currentProductEntry();
+        $qtyProductExit = Product::find($request->product_id)->currentProductExit();
+        $productStock = $qtyProductEntry - $qtyProductExit + $request->qty;
+        $currentEntry = Product::find($request->product_id)->currentEntry();
+        $currentExit = Product::find($request->product_id)->currentExit();
         if($request->iva== 0){
             $purchase['iva'] = true;
         }
         $revenue = ($request->price_sale * $request->price) / 100;
         $purchase['revenue'] = $revenue;
-        $purchase['stock'] = $currentStock + $request->qty;
-        $purchase['balance'] = $currentBalance + ($request->price * $request->qty);
+        $purchase['stock'] = $productStock;
+        $purchase['balance'] = ($currentEntry - $currentExit) + ($request->price * $request->qty);
         $newPurchase = Purchase::create($purchase);
 
         $kardex = [];
@@ -100,10 +103,10 @@ class PurchaseController extends Controller
         $kardex['operation_date'] = $newPurchase->created_at;
         $kardex['detail'] = 'Compra '.$request->comment;
         $kardex['product_entry'] = $request->qty;
-        $kardex['product_stock'] = $currentStock + $request->qty;
+        $kardex['product_stock'] = $productStock;
         $kardex['cost_unit'] = $purchase['price'];
         $kardex['amount_entry'] = $purchase['price'] * $purchase['qty'];
-        $kardex['amount_stock'] = ($purchase['price'] * $purchase['qty']) + ($currentBalance);
+        $kardex['amount_stock'] = $currentEntry - $currentExit + ($purchase['price'] * $purchase['qty']);
         KardexController::kardeStore($kardex);
 
         return redirect()->route('purchases.index')->with('success', 'Compra creada exitosamente');
@@ -143,5 +146,77 @@ class PurchaseController extends Controller
         $purchase = Purchase::find($id);
         $purchase->delete();
         return redirect()->route('purchases.index')->with('success', 'Compra eliminada exitosamente');
+    }
+    public function returnToSupplier(Request $request){
+        /*
+        "product_id" => "1"
+        "quantity" => "300"
+        "unit_price" => "32"
+        "reason" => "sdfg sdfg fg"
+        */
+        $qtyProductEntry = Product::find($request->product_id)->currentProductEntry();
+        $qtyProductExit = Product::find($request->product_id)->currentProductExit();
+        $productStock = $qtyProductEntry - $qtyProductExit - $request->quantity;
+        $sumAmountEntry = Product::find($request->product_id)->currentEntry();
+        $sumAmountExit = Product::find($request->product_id)->currentExit();
+        $totalAmount = $sumAmountEntry - $sumAmountExit - ($request->unit_price * $request->quantity);
+
+        $kardex = [];
+        $kardex['product_id'] = $request->product_id;
+        $kardex['operation_date'] = now();
+        $kardex['detail'] = 'Devolucion al proveedor '.$request->reason;
+        $kardex['product_exit'] = $request->quantity;
+        $kardex['product_stock'] = $productStock;
+        $kardex['cost_unit'] = $request->unit_price;
+        $kardex['amount_exit'] = $request->unit_price * $request->quantity;
+        $kardex['amount_stock'] = $totalAmount;
+        KardexController::kardeStore($kardex);
+
+        $purchase = new Purchase();
+        $purchase->product_id = $request->product_id;
+        $purchase->qty = $request->quantity;
+        $purchase->price = $request->unit_price;
+        $purchase->stock = $productStock;
+        $purchase->iva = 1;
+        $purchase->revenue = 0;
+        $purchase->balance = $totalAmount;
+        $purchase->unit = $request->unit;
+        $purchase->expiration_date = $request->expiration_date;
+        $purchase->supplier_id = $request->supplier_id;
+        $purchase->save();
+        return redirect()->back()->with('success', 'Devolucion al proveedor creada exitosamente');
+    }
+    public function returnFromClient(Request $request){
+        $qtyProductEntry = Product::find($request->product_id)->currentProductEntry();
+        $qtyProductExit = Product::find($request->product_id)->currentProductExit();
+        $productStock = $qtyProductEntry - $qtyProductExit + $request->quantity;
+        $sumAmountEntry = Product::find($request->product_id)->currentEntry();
+        $sumAmountExit = Product::find($request->product_id)->currentExit();
+        $totalAmount = $sumAmountEntry - $sumAmountExit + ($request->unit_price * $request->quantity);
+
+        $kardex = [];
+        $kardex['product_id'] = $request->product_id;
+        $kardex['operation_date'] = now();
+        $kardex['detail'] = 'Devolucion del cliente '.$request->reason;
+        $kardex['product_entry'] = $request->quantity;
+        $kardex['product_stock'] = $productStock;
+        $kardex['cost_unit'] = $request->unit_price;
+        $kardex['amount_entry'] = $request->unit_price * $request->quantity;
+        $kardex['amount_stock'] = $totalAmount;
+        KardexController::kardeStore($kardex);
+
+        $purchase = new Purchase();
+        $purchase->product_id = $request->product_id;
+        $purchase->qty = $request->quantity;
+        $purchase->price = $request->unit_price;
+        $purchase->stock = $productStock;
+        $purchase->iva = 1;
+        $purchase->revenue = 0;
+        $purchase->balance = $totalAmount;
+        $purchase->unit = $request->unit;
+        $purchase->expiration_date = $request->expiration_date;
+        $purchase->supplier_id = $request->supplier_id;
+        $purchase->save();
+        return redirect()->back()->with('success', 'Devolucion al proveedor creada exitosamente');
     }
 }

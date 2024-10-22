@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Kardex;
 use App\Models\Product;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
 
 class KardexController extends Controller
@@ -57,9 +58,10 @@ class KardexController extends Controller
 
     public function getKardex($id)
     {
+        $supplier = Supplier::all();
         $kardex = Product::find($id)->kardexes;
-        $product = Product::find($id)->name;
-        return view('kardexes.show', compact('kardex', 'product'));
+        $product = Product::find($id);
+        return view('kardexes.show', compact('kardex', 'product', 'supplier'));
     }
 
     /**
@@ -67,8 +69,9 @@ class KardexController extends Controller
      */
     public function show($id)
     {
+        $supplier = Supplier::all();
         $kardex = Kardex::where('product_id', $id)->get();
-        return view('kardexes.show', compact('kardex'));
+        return view('kardexes.show', compact('kardex', 'supplier'));
     }
 
     /**

@@ -38,10 +38,13 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('clients', ClientController::class)->names('clients');
     Route::resource('sales', SaleController::class)->names('sales');
     Route::resource('purchases', PurchaseController::class)->names('purchases');
+    Route::post('/purchases/return-to-supplier', [PurchaseController::class, 'returnToSupplier'])->name('return-to-supplier');
+    Route::post('/purchases/return-from-client', [PurchaseController::class, 'returnFromClient'])->name('return-from-client');
     //Route::resource('kardexes', KardexController::class)->names('kardexes');
     /* store kardex */
     Route::post('/kardexes', [KardexController::class, 'store'])->name('kardexes.store');
     Route::get('/kardexes/{id}', [KardexController::class, 'getKardex'])->name('get-kardexes.show');
+
 
     /* Route::resource('inventories', InventoryController::class)->names('inventories');
     Route::resource('reports', ReportController::class)->names('reports'); */

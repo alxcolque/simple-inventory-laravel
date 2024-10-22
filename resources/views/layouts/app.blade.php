@@ -68,6 +68,7 @@
             <div class="main-panel">
                 @include('layouts.partials.alert')
                 @yield('content')
+
                 @include('layouts.partials.footer')
             </div>
             <!-- main-panel ends -->
@@ -75,7 +76,7 @@
         <!-- page-body-wrapper ends -->
     </div>
     <!-- container-scroller -->
-    @yield('modals')
+@yield('modals')
     <!-- Modal para un carrito de compras -->
     <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -103,14 +104,14 @@
                         <tfoot>
                             <tr>
                                 <td> </td>
-                                <td colspan="2"> <b>Con IVA:</b></td>
+                                <td colspan="3"> <b>Con IVA:</b></td>
                                 <td>
                                     <h4 id="totalIva">0</h4>
                                 </td>
                                 <td></td>
                             </tr>
                             <tr>
-                                <td colspan="2"></td>
+                                <td colspan="3"></td>
                                 <td>
                                     <h4>Total: Bs </h4>
                                 </td>

@@ -34,28 +34,28 @@ class HomeController extends Controller
             // Filtra las compras por la categoria seleccionada y las guarda en la variable $purchases
             $purchases = Purchase::whereHas('product', function($query) use ($request){
                 $query->where('category_id', $request->get('category'));
-            })->paginate(10);
+            })->where('stock', '>', 0)->paginate(10);
         }else if($search){
             // Filtra las compras por el nombre del producto y las guarda en la variable $purchases
             $purchases = Purchase::whereHas('product', function($query) use ($search){
                 $query->where('name', 'like', '%'.$search.'%');
-            })->paginate(10);
+            })->where('stock', '>', 0)->paginate(10);
         }else{
             // Filtra por dia, semana, mes o año y las guarda en la variable $purchases
             if($filter){
                 if($filter == 'day'){
-                    $purchases = Purchase::whereDate('created_at', date('Y-m-d'))->paginate(10);
+                    $purchases = Purchase::whereDate('created_at', date('Y-m-d'))->where('stock', '>', 0)->paginate(10);
                 }else if($filter == 'week'){
-                    $purchases = Purchase::whereBetween('created_at', [date('Y-m-d', strtotime('-1 week')), date('Y-m-d')])->paginate(10);
+                    $purchases = Purchase::whereBetween('created_at', [date('Y-m-d', strtotime('-1 week')), date('Y-m-d')])->where('stock', '>', 0)->paginate(10);
                 }else if($filter == 'month'){
-                    $purchases = Purchase::whereMonth('created_at', date('m'))->paginate(10);
+                    $purchases = Purchase::whereMonth('created_at', date('m'))->where('stock', '>', 0)->paginate(10);
                 }else if($filter == 'year'){
-                    $purchases = Purchase::whereYear('created_at', date('Y'))->paginate(10);
+                    $purchases = Purchase::whereYear('created_at', date('Y'))->where('stock', '>', 0)->paginate(10);
                 }else{
-                    $purchases = Purchase::paginate(10);
+                    $purchases = Purchase::where('stock', '>', 0)->paginate(10);
                 }
             }else{
-                $purchases = Purchase::paginate(10);
+                $purchases = Purchase::where('stock', '>', 0)->paginate(10);
             }
         }
         $allPurchases = Purchase::all();

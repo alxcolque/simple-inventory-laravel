@@ -80,22 +80,26 @@ class SaleController extends Controller
             foreach ($cart as $item) {
                 //Cardex actualiza el stock y balance
                 $currentStock = Product::find($item['productId'])->stock(); //2170
-                $currentBalance = Product::find($item['productId'])->balance();
                 // actualiza la columna stock de compras con la cantidad de productos vendidos.
                 $purchase = Purchase::where('product_id', $item['productId'])->where('stock', '>', 0)->get();
                 $strCostUnit = '';
                 $balanceSale = 0;
                 $currentQuantity = $item['quantity']; //1280
+                $currentBalance = 0;
                 foreach ($purchase as $p) {
                     if ($currentQuantity <= $p->stock) { //1280 <= 850
-                        $currentQuantity = $currentQuantity - $p->stock; //1280 - 850 = 430
+                        $currentBalance = $p->balance;
                         $balanceSale = $balanceSale + ($currentQuantity * $p->price); //0 + (430 * 24.36) = 10474.8
+                        $currentQuantity = $p->qty - $currentQuantity; //1280 - 430 = 890
                         $strCostUnit = $strCostUnit . $p->price; //0 + 24.36 = 24.36
-                        $p->stock =  $p->stock - $currentQuantity; //850 - 430 = 420
+                        $p->stock =  $p->stock - $item['quantity']; //850 - 430 = 420
                         $p->save();
+                        //salirse del foreach
+                        break;
                     } else if ($currentQuantity <= $currentStock) { //1280 <= 2170
+                        $currentBalance = $p->balance;
                         $currentQuantity = $currentQuantity - $p->stock; //1280 - 850 = 430
-                        $balanceSale = $balanceSale + ($p->stock * $p->price); //430 + (850 * 25) = 6550
+                        $balanceSale = $balanceSale + ($p->stock * $p->price); //0 + (850 * 25) = 21250
                         $strCostUnit = $strCostUnit . $p->price . '|'; //10 + 25 = 10|25
                         $p->stock = $p->qty - $p->stock; //850 - 850 = 0
                         $p->save();
@@ -114,16 +118,22 @@ class SaleController extends Controller
                 $detail->save();
 
                 // actualiza el kardex
+                $qtyProductEntry = Product::find($item['productId'])->currentProductEntry();
+                $qtyProductExit = Product::find($item['productId'])->currentProductExit();
+                $productStock = $qtyProductEntry - $qtyProductExit - $item['quantity'];
+                $sumAmountEntry = Product::find($item['productId'])->currentEntry();
+                $sumAmountExit = Product::find($item['productId'])->currentExit();
+                $totalAmount = $sumAmountEntry - $sumAmountExit - $balanceSale;
 
                 $kardex = [];
                 $kardex['product_id'] = $item['productId'];
                 $kardex['operation_date'] = $detail->created_at;
                 $kardex['detail'] = 'Venta';
                 $kardex['product_exit'] = $item['quantity'];
-                $kardex['product_stock'] = $currentStock;
+                $kardex['product_stock'] = $productStock;
                 $kardex['cost_unit'] = $strCostUnit;
                 $kardex['amount_exit'] = $balanceSale;
-                $kardex['amount_stock'] = $currentBalance;
+                $kardex['amount_stock'] = $totalAmount;
                 KardexController::kardeStore($kardex);
             }
             return response()->json(['message' => 'Venta registrado con éxito', 'id' => $sale->id], 200);

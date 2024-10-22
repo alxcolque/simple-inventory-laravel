@@ -135,7 +135,10 @@
                                             <td>{{ $purchase->revenue * $purchase->qty }}</td>
                                             <td class="no-print">
                                                 <a href="{{ route('purchases.show', $purchase) }}"
+                                                    title="Ver detalle de compra"
                                                     class="btn btn-sm btn-primary"><i class="mdi mdi-eye"></i> </a>
+
+                                                {{--  --}}
                                                 {{-- <a href="{{ route('purchases.edit', $purchase) }}"
                                                         class="btn btn-sm btn-warning"><i class="mdi mdi-pencil"></i> </a>
                                                     <form action="{{ route('purchases.destroy', $purchase) }}" method="POST"
