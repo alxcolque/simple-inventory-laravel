@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Kardex;
 use App\Models\Product;
+use App\Models\Purchase;
+use App\Models\Sale;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 
@@ -93,8 +95,25 @@ class KardexController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Kardex $kardex)
+    public function destroy($id)
     {
-        //
+        $kardex = Kardex::find($id);
+        //Si en detail contiene el string "Venta" eliminar el ultimo
+        $isSale = strpos($kardex->detail, 'Venta') !== false;
+        $isReturn = strpos($kardex->detail, 'Devolver') !== false;
+        if ($isSale || $isReturn) { // si es venta o devolver
+            if ($isSale) {
+                return response()->json(['error' => 'NO se puede eliminar la venta.']);
+            } else { //devolver al proveedor
+                $purchase = Purchase::where('product_id', $kardex->product_id)->orderBy('id', 'desc')->first();
+                $purchase->delete();
+            }
+        } else {
+            $purchase = Purchase::where('product_id', $kardex->product_id)->orderBy('id', 'desc')->first();
+            $purchase->delete();
+        }
+
+        $kardex->delete();
+        return response()->json(['message' => 'Kardex eliminado correctamente.']);
     }
 }

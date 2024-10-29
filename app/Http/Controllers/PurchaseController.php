@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PurchaseRequest;
 use App\Models\Category;
+use App\Models\Kardex;
 use App\Models\Product;
 use App\Models\Purchase;
 use App\Models\Supplier;
@@ -157,6 +158,9 @@ class PurchaseController extends Controller
         $qtyProductEntry = Product::find($request->product_id)->currentProductEntry();
         $qtyProductExit = Product::find($request->product_id)->currentProductExit();
         $productStock = $qtyProductEntry - $qtyProductExit - $request->quantity;
+        if($request->quantity > $qtyProductEntry - $qtyProductExit){
+            return redirect()->back()->with('error', 'No se puede devolver mas productos de los que se han comprado');
+        }
         $sumAmountEntry = Product::find($request->product_id)->currentEntry();
         $sumAmountExit = Product::find($request->product_id)->currentExit();
         $totalAmount = $sumAmountEntry - $sumAmountExit - ($request->unit_price * $request->quantity);
@@ -164,7 +168,7 @@ class PurchaseController extends Controller
         $kardex = [];
         $kardex['product_id'] = $request->product_id;
         $kardex['operation_date'] = now();
-        $kardex['detail'] = 'Devolucion al proveedor '.$request->reason;
+        $kardex['detail'] = 'Devolver al proveedor '.$request->reason;
         $kardex['product_exit'] = $request->quantity;
         $kardex['product_stock'] = $productStock;
         $kardex['cost_unit'] = $request->unit_price;
@@ -184,9 +188,18 @@ class PurchaseController extends Controller
         $purchase->expiration_date = $request->expiration_date;
         $purchase->supplier_id = $request->supplier_id;
         $purchase->save();
-        return redirect()->back()->with('success', 'Devolucion al proveedor creada exitosamente');
+        return redirect()->back()->with('success', 'Devolucion al proveedor registrada exitosamente');
     }
     public function returnFromClient(Request $request){
+        $lastSaleKardex = Kardex::where('detail', 'like', '%Venta%')->where('product_id', $request->product_id)->orderBy('id', 'desc')->first();
+
+        if(!$lastSaleKardex){
+            return redirect()->back()->with('error', 'No se puede devolver productos si no vendió.');
+        }
+        if($lastSaleKardex->product_exit > $request->quantity){
+            return redirect()->back()->with('error', 'No se puede devolver mas productos de los que se han vendido');
+        }
+
         $qtyProductEntry = Product::find($request->product_id)->currentProductEntry();
         $qtyProductExit = Product::find($request->product_id)->currentProductExit();
         $productStock = $qtyProductEntry - $qtyProductExit + $request->quantity;
@@ -217,6 +230,6 @@ class PurchaseController extends Controller
         $purchase->expiration_date = $request->expiration_date;
         $purchase->supplier_id = $request->supplier_id;
         $purchase->save();
-        return redirect()->back()->with('success', 'Devolucion al proveedor creada exitosamente');
+        return redirect()->back()->with('success', 'Devolución del cliente registrada exitosamente');
     }
 }

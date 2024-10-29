@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('kardexes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->constrained('products');
+            $table->foreignId('product_id')->constrained('products')->onDelete('cascade')->onUpdate('cascade');
             $table->date('operation_date');
             $table->string('detail')->nullable();
             $table->integer('product_entry')->nullable();

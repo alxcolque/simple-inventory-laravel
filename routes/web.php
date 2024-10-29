@@ -44,6 +44,7 @@ Route::middleware(['auth'])->group(function () {
     /* store kardex */
     Route::post('/kardexes', [KardexController::class, 'store'])->name('kardexes.store');
     Route::get('/kardexes/{id}', [KardexController::class, 'getKardex'])->name('get-kardexes.show');
+    Route::delete('/kardexes/{id}', [KardexController::class, 'destroy'])->name('kardexes.destroy');
 
 
     /* Route::resource('inventories', InventoryController::class)->names('inventories');

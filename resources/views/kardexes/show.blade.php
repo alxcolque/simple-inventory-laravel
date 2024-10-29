@@ -17,6 +17,9 @@
                             {{-- Devolucion del cliente --}}
                             <a href="javascript:void(0)" onclick="openReturnFromClientModal()" title="Devolucion del cliente"
                                 class="btn btn-danger"><i class="mdi mdi-undo"></i> Devolucion del cliente</a>
+                            {{-- Eliminar el ultimo registro --}}
+                            <a href="javascript:void(0)" onclick="deleteLastRecord()" title="Eliminar el ultimo registro"
+                                class="btn btn-danger"><i class="mdi mdi-delete"></i> Eliminar</a>
                         </div>
                         <b>PRODUCTO: {{ $product->name }}</b>
                         <table class="table table-bordered">
@@ -73,6 +76,28 @@
     }
     function openReturnFromClientModal(){
         $('#returnFromClientModal').modal('show');
+    }
+    function deleteLastRecord(){
+        if(confirm('¿Estas seguro de eliminar el ultimo registro?')){
+            var url = '{{ route('kardexes.destroy', '') }}';
+            let kardexId = {!! $kardex->last()->id !!};
+            let token = '{{ csrf_token() }}';
+            // peticion delete
+            $.ajax({
+            url: url + '/' + kardexId,
+            type: 'DELETE',
+            headers: {
+                    'X-CSRF-TOKEN': token
+                },
+                success: function(response) {
+                    if (response.error) {
+                        alert(response.error);
+                    } else {
+                        alert(response.message);
+                    }
+                }
+            });
+        }
     }
 </script>
 @endsection
