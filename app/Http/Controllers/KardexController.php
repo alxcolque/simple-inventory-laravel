@@ -62,6 +62,9 @@ class KardexController extends Controller
     {
         $supplier = Supplier::all();
         $kardex = Product::find($id)->kardexes;
+        if(count($kardex) == 0){
+            return redirect()->route('purchases.index')->with('error', 'No hay kardexes para este producto');
+        }
         $product = Product::find($id);
         return view('kardexes.show', compact('kardex', 'product', 'supplier'));
     }
@@ -73,6 +76,9 @@ class KardexController extends Controller
     {
         $supplier = Supplier::all();
         $kardex = Kardex::where('product_id', $id)->get();
+        if(count($kardex) == 0){
+            return redirect()->route('purchases.index')->with('error', 'No hay kardexes para este producto');
+        }
         return view('kardexes.show', compact('kardex', 'supplier'));
     }
 
@@ -106,7 +112,9 @@ class KardexController extends Controller
                 return response()->json(['error' => 'NO se puede eliminar la venta.']);
             } else { //devolver al proveedor
                 $purchase = Purchase::where('product_id', $kardex->product_id)->orderBy('id', 'desc')->first();
-                $purchase->delete();
+                $purchase->stock = $kardex->product_exit;
+                $purchase->balance = $kardex->amount_stock;
+                $purchase->save();
             }
         } else {
             $purchase = Purchase::where('product_id', $kardex->product_id)->orderBy('id', 'desc')->first();

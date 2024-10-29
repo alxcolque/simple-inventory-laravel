@@ -30,7 +30,7 @@
                                 <div class="row">
                                     <div class="col-9">
                                         <div class="d-flex align-items-center align-self-start">
-                                            <h3 class="mb-0" id="total_beneficio">Bs <span class="text-success">{{ number_format($total_beneficio, 2, '.', ',') }}</span> </h3>
+                                            <h3 class="mb-0" id="total_stock">Bs <span class="text-success">{{ number_format($total_stock, 2, '.', ',') }}</span> </h3>
 
                                         </div>
                                     </div>
@@ -40,7 +40,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <h6 class="text-muted font-weight-normal">TOTAL BENEFICIO</h6>
+                                <h6 class="text-muted font-weight-normal">TOTAL STOCK</h6>
 
                             </div>
                         </div>
@@ -111,11 +111,11 @@
                                     <tr>
                                         <th>Imagen</th>
                                         <th>Nombre</th>
-                                        <th>Categoría</th>
                                         <th>Cantidad</th>
-                                        <th>PCom</th>
-                                        <th>PVen</th>
-                                        <th>G</th>
+                                        <th>Precio</th>
+                                        <th>Stock</th>
+                                        <th>Subtotal</th>
+                                        <th>F-Ven</th>
                                         <th class="no-print">Acciones</th>
                                     </tr>
                                 </thead>
@@ -127,16 +127,24 @@
                                                 <img src="{{ $purchase->product->image ? $purchase->product->image : 'https://e7.pngegg.com/pngimages/854/638/png-clipart-computer-icons-preview-batch-miscellaneous-angle-thumbnail.png' }}"
                                                     alt="{{ $purchase->product->name }}" class="" width="100">
                                             </td>
-                                            <td>{{ $purchase->product->name }}</td>
-                                            <td>{{ $purchase->product->category->title }}</td>
+                                            <td>
+                                                {{ $purchase->product->name }}
+                                                <br>
+                                                {{-- span small category --}}
+                                                <span style="font-size: 10px; color: {{ $purchase->product->category->color }};">{{ $purchase->product->category->title }}</span>
+                                            </td>
                                             <td>{{ $purchase->qty }}</td>
                                             <td>{{ $purchase->price }}</td>
-                                            <td>{{ number_format($purchase->price + $purchase->revenue, 2, '.', ',') }}</td>
-                                            <td>{{ $purchase->revenue * $purchase->qty }}</td>
+                                            <td>{{ $purchase->stock }}</td>
+                                            <td>{{ number_format($purchase->balance, 2, '.', ',') }}</td>
+                                            <td>{{ $purchase->expiration_date }}</td>
                                             <td class="no-print">
                                                 <a href="{{ route('purchases.show', $purchase) }}"
                                                     title="Ver detalle de compra"
                                                     class="btn btn-sm btn-primary"><i class="mdi mdi-eye"></i> </a>
+                                                <a href="{{ route('get-kardexes.show', ['id' => $purchase->product->id]) }}"
+                                                    title="Ver kardex"
+                                                    class="btn btn-sm btn-info"><i class="mdi mdi-table"></i> </a>
 
                                                 {{--  --}}
                                                 {{-- <a href="{{ route('purchases.edit', $purchase) }}"

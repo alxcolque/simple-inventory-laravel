@@ -8,20 +8,22 @@
                     <div class="card-body table-responsive">
                         <h2 class="card-title text-center">KARDEX FÍSICO - VALORADO</h2>
                         {{-- Botones de imprimir y descargar --}}
-                        <div class="">
-                            <button class="btn btn-primary"><i class="mdi mdi-printer"></i></button>
-                            <button class="btn btn-success"><i class="mdi mdi-file-download"></i></button>
+                        <div class="no-print">
+                            <button class="btn btn-primary" onclick="window.print()"><i class="mdi mdi-printer"></i></button>
+                            <button class="btn btn-success btn-excel"><i class="mdi mdi-file-excel"></i></button>
                             {{-- Devolucion al proveedor --}}
-                            <a href="javascript:void(0)" onclick="openReturnToSupplierModal()" title="Devolucion al proveedor"
-                                class="btn btn-warning"><i class="mdi mdi-undo"></i> Devolver</a>
+                            <a href="javascript:void(0)" onclick="openReturnToSupplierModal()"
+                                title="Devolucion al proveedor" class="btn btn-warning"><i class="mdi mdi-arrow-up"></i>
+                                Devolver al proveedor</a>
                             {{-- Devolucion del cliente --}}
-                            <a href="javascript:void(0)" onclick="openReturnFromClientModal()" title="Devolucion del cliente"
-                                class="btn btn-danger"><i class="mdi mdi-undo"></i> Devolucion del cliente</a>
+                            <a href="javascript:void(0)" onclick="openReturnFromClientModal()"
+                                title="Devolucion del cliente" class="btn btn-danger"><i class="mdi mdi-undo"></i>
+                                Devolucion del cliente</a>
                             {{-- Eliminar el ultimo registro --}}
                             <a href="javascript:void(0)" onclick="deleteLastRecord()" title="Eliminar el ultimo registro"
                                 class="btn btn-danger"><i class="mdi mdi-delete"></i> Eliminar</a>
                         </div>
-                        <b>PRODUCTO: {{ $product->name }}</b>
+                        <b id="productName">PRODUCTO: {{ $product->name }}</b>
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
@@ -62,42 +64,77 @@
             </div>
         </div>
     </div>
-@include('kardexes.return-to-supplier')
+    @include('kardexes.return-to-supplier')
     @include('kardexes.return-from-client')
 @endsection
 
 @section('css')
+    <style>
+        /*Al imprimir omite la ultima columna de acciones de la tabla*/
+        @media print {
+            .no-print {
+                display: none;
+            }
+        }
+    </style>
 @endsection
 
 @section('js')
-<script>
-    function openReturnToSupplierModal(){
-        $('#returnToSupplierModal').modal('show');
-    }
-    function openReturnFromClientModal(){
-        $('#returnFromClientModal').modal('show');
-    }
-    function deleteLastRecord(){
-        if(confirm('¿Estas seguro de eliminar el ultimo registro?')){
-            var url = '{{ route('kardexes.destroy', '') }}';
-            let kardexId = {!! $kardex->last()->id !!};
-            let token = '{{ csrf_token() }}';
-            // peticion delete
-            $.ajax({
-            url: url + '/' + kardexId,
-            type: 'DELETE',
-            headers: {
-                    'X-CSRF-TOKEN': token
-                },
-                success: function(response) {
-                    if (response.error) {
-                        alert(response.error);
-                    } else {
-                        alert(response.message);
-                    }
-                }
-            });
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+    <script>
+        function openReturnToSupplierModal() {
+            $('#returnToSupplierModal').modal('show');
         }
-    }
-</script>
+
+        function openReturnFromClientModal() {
+            $('#returnFromClientModal').modal('show');
+        }
+
+        function deleteLastRecord() {
+            if (confirm('¿Estas seguro de eliminar el ultimo registro?')) {
+                var url = '{{ route('kardexes.destroy', '') }}';
+                let kardexId = {!! $kardex->last()->id !!};
+                let token = '{{ csrf_token() }}';
+                // peticion delete
+                $.ajax({
+                    url: url + '/' + kardexId,
+                    type: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': token
+                    },
+                    success: function(response) {
+                        if (response.error) {
+                            alert(response.error);
+                        } else {
+                            alert(response.message);
+                        }
+                    }
+                });
+            }
+        }
+    </script>
+
+
+    <script>
+
+        document.querySelector('.btn-excel').addEventListener('click', function() {
+
+            var wb = XLSX.utils.table_to_book(document.querySelector('table'), {
+                sheet: "Sheet JS"
+            });
+
+            XLSX.write(wb, {
+                bookType: 'xlsx',
+                bookSST: true,
+                type: 'base64'
+            });
+
+            var productName = document.querySelector('#productName').textContent.split(':')[1].trim();
+
+            productName = productName.replace(/\s+/g, '_');
+            var fileName = new Date().toISOString().slice(0, 19).replace(/:/g, '-') + ".xlsx";
+            XLSX.writeFile(wb, 'kardex_' + productName + '_' + fileName);
+        });
+        /* Realiza una operacion para obtener el total de compras y el beneficio y sus porcentales*/
+    </script>
 @endsection

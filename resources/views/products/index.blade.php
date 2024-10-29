@@ -72,7 +72,8 @@
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-sm btn-danger"><i class="mdi mdi-delete-forever"></i></button>
                                                     </form>
-
+                                                    {{-- Kardex --}}
+                                                    <a href="{{ route('get-kardexes.show', ['id' => $product->id]) }}" class="btn btn-info btn-sm"><i class="mdi mdi-table"></i></a>
                                                 </td>
                                             </tr>
                                         @endforeach

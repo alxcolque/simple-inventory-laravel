@@ -48,12 +48,12 @@ class PurchaseController extends Controller
         $categoryInPurchases = Product::whereIn('id', $allPurchases->pluck('product_id'))->pluck('category_id', 'id')->unique();
         $categories = Category::whereIn('id', $categoryInPurchases->values())->get();
         $total_compras = 0;
-        $total_beneficio = 0;
+        $total_stock = 0;
         foreach($purchases as $purchase){
             $total_compras += $purchase->price * $purchase->qty;
-            $total_beneficio += $purchase->revenue * $purchase->qty;
+            $total_stock += $purchase->stock * $purchase->price;
         }
-        return view('purchases.index', compact('purchases', 'search', 'categories', 'filter','total_compras','total_beneficio'));
+        return view('purchases.index', compact('purchases', 'search', 'categories', 'filter','total_compras','total_stock'));
     }
 
     public function create()
@@ -176,8 +176,7 @@ class PurchaseController extends Controller
         $kardex['amount_stock'] = $totalAmount;
         KardexController::kardeStore($kardex);
 
-        $purchase = new Purchase();
-        $purchase->product_id = $request->product_id;
+        $purchase = Purchase::where('product_id', $request->product_id)->orderBy('id', 'desc')->first();
         $purchase->qty = $request->quantity;
         $purchase->price = $request->unit_price;
         $purchase->stock = $productStock;
