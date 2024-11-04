@@ -234,11 +234,6 @@
                                     {{-- units = ['caja', 'tableta', 'frasco', 'kilo', 'quintal', 'tonelada', 'unidad', 'gramos', 'mililitros', 'miligramos', 'microgramos']; --}}
                                     <select class="form-select" id="unit" name="unit" required>
                                         <option value="unidad">Unidad</option>
-                                        <option value="jarabe">Jarabe</option>
-                                        <option value="ampolla">Ampolla</option>
-                                        <option value="caja">Caja</option>
-                                        <option value="tableta">Tableta</option>
-                                        <option value="frasco">Frasco</option>
                                         <option value="kilo">Kilo</option>
                                         <option value="quintal">Quintal</option>
                                         <option value="tonelada">Tonelada</option>
@@ -247,6 +242,11 @@
                                         <option value="mililitros">Mililitros</option>
                                         <option value="miligramos">Miligramos</option>
                                         <option value="microgramos">Microgramos</option>
+                                        <option value="jarabe">Jarabe</option>
+                                        <option value="ampolla">Ampolla</option>
+                                        <option value="caja">Caja</option>
+                                        <option value="tableta">Tableta</option>
+                                        <option value="frasco">Frasco</option>
                                     </select>
                                 </div>
                             </div>
