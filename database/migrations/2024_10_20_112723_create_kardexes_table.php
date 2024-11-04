@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer('product_entry')->nullable();
             $table->integer('product_exit')->nullable();
             $table->integer('product_stock')->nullable();
-            $table->string('unit_price')->nullable();
+            $table->string('cost_unit')->nullable();
             $table->decimal('amount_entry', 10, 2)->nullable();
             $table->decimal('amount_exit', 10, 2)->nullable();
             $table->decimal('amount_stock', 10, 2)->nullable();
