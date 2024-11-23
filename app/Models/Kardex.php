@@ -19,6 +19,7 @@ class Kardex extends Model
         'amount_entry',
         'amount_exit',
         'amount_stock',
+        'created_at',
     ];
 
     public function product()

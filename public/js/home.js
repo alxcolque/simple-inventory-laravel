@@ -12,6 +12,7 @@ function addToCart(purchaseId, productId, name, image, price, stock, quantity, u
     }
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
     let product = cart.find(p => p.purchaseId == purchaseId);
+
     if (product) {
         product.quantity++;
     } else {
@@ -23,7 +24,7 @@ function addToCart(purchaseId, productId, name, image, price, stock, quantity, u
             price,
             quantity,
             unit,
-            iva
+            iva,
         });
     }
     localStorage.setItem('cart', JSON.stringify(cart));
@@ -115,6 +116,7 @@ function clearLocalStorage() {
     localStorage.removeItem('clientName');
     localStorage.removeItem('total');
     localStorage.removeItem('amountIva');
+    localStorage.removeItem('created_at');
     showCart();
 }
 function removeFromCart(id) {
@@ -140,7 +142,12 @@ document.getElementById('payButton').addEventListener('click', function () {
     let total = localStorage.getItem('total');
     // recupera el iva del local storage
     let ivaTotal = localStorage.getItem('amountIva');
-
+    // recupera la fecha de creacion del local storage
+    let created_at = document.getElementById('created_at').value;
+    if (created_at == '') {
+        alert('Seleccione una fecha de creación');
+        return;
+    }
     //console.log(iva);
     // si no hay productos en el carrito
     if (cart.length == 0) {
@@ -162,6 +169,7 @@ document.getElementById('payButton').addEventListener('click', function () {
             clientId,
             total,
             ivaTotal,
+            created_at
         })
     }).then(response => response.json())
         .then(data => {

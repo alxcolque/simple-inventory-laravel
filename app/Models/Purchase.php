@@ -20,6 +20,7 @@ class Purchase extends Model
         'expiration_date',
         'iva',
         'balance',
+        'created_at',
     ];
 
     /**

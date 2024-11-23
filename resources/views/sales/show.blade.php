@@ -44,7 +44,7 @@
                                     <tbody>
                                         @foreach ($detail as $item)
                                             <tr>
-                                                <td>{{ $item->product->name }}</td>
+                                                <td><a href="{{ route('get-kardexes.show', $item->product->id) }}">{{ $item->product->name }}</a></td>
                                                 <td>{{ $item->qty }}</td>
                                                 <td>{{ $item->price }}</td>
                                                 <td>{{ $item->qty * $item->price }}</td>

@@ -358,11 +358,12 @@
             if (quantity == 0) {
                 return;
             }
-            if (quantity > productStock) {
+            /*if (quantity > productStock) {
                 alert('No hay suficiente stock disponible');
                 //$('#addCartQuantityModal').modal('hide');
                 return;
-            } else {
+            } */
+            else {
                 //if is checked iva
                 var iva = document.getElementById('iva').checked;
                 var revenue = document.getElementById('revenue').value;

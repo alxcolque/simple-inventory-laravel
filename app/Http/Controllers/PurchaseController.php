@@ -100,6 +100,7 @@ class PurchaseController extends Controller
         $newPurchase = Purchase::create($purchase);
 
         $kardex = [];
+        $kardex['created_at'] = $request->created_at;
         $kardex['product_id'] = $newPurchase->product_id;
         $kardex['operation_date'] = $newPurchase->created_at;
         $kardex['detail'] = 'Compra '.$request->comment;
@@ -166,6 +167,7 @@ class PurchaseController extends Controller
         $totalAmount = $sumAmountEntry - $sumAmountExit - ($request->unit_price * $request->quantity);
 
         $kardex = [];
+        $kardex['created_at'] = now();
         $kardex['product_id'] = $request->product_id;
         $kardex['operation_date'] = now();
         $kardex['detail'] = 'Devolver al proveedor '.$request->reason;
@@ -207,6 +209,7 @@ class PurchaseController extends Controller
         $totalAmount = $sumAmountEntry - $sumAmountExit + ($request->unit_price * $request->quantity);
 
         $kardex = [];
+        $kardex['created_at'] = now();
         $kardex['product_id'] = $request->product_id;
         $kardex['operation_date'] = now();
         $kardex['detail'] = 'Devolucion del cliente '.$request->reason;

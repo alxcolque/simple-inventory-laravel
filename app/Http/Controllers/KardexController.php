@@ -45,6 +45,7 @@ class KardexController extends Controller
     public static function kardeStore($kardex)
     {
         $newKardex = [];
+        $newKardex['created_at'] = $kardex['created_at'];
         $newKardex['product_id'] = $kardex['product_id'];
         $newKardex['operation_date'] = $kardex['operation_date'];
         $newKardex['detail'] = $kardex['detail'];

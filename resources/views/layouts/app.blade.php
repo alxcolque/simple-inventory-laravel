@@ -130,6 +130,13 @@
                         <!-- Asigna el cliente a esta compra, con select 2, desde la bariable $clients -->
                         <div id="clientSelect" class="form-group"></div>
                     </div>
+                    <div class="col-md-6 form-group row">
+                        <label for="created_at" class="col-form-label">Fecha de creación</label>
+                        <div class="col-sm-12">
+                            <input type="date" class="form-control" id="created_at" name="created_at" placeholder="Fecha de creación" value="{{ old('created_at', $purchase->created_at ?? '') }}">
+                        </div>
+                    </div>
+                    {{-- Fecha de creacion de la venta --}}
 
                 </div>
                 <div class="modal-footer">

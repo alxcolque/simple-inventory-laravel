@@ -74,6 +74,13 @@
             @enderror
         </div>
     </div>
+    {{-- Fecha de creacion --}}
+    <div class="col-md-3 form-group row">
+        <label for="created_at" class="col-form-label">Fecha de creación</label>
+        <div class="col-sm-12">
+            <input type="date" class="form-control" id="created_at" name="created_at" placeholder="Fecha de creación" value="{{ old('created_at', $purchase->created_at ?? '') }}">
+        </div>
+    </div>
     <!-- campo price_sale -->
     <div class="col-md-3 form-group row" hidden>
         <label for="price_sale" class="col-form-label">Precio de venta en (%) <span class="text-danger">*</span></label>

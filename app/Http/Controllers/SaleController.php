@@ -48,6 +48,7 @@ class SaleController extends Controller
 
     public function store(Request $request)
     {
+        //dd($request->all());
         $cart = $request->cart;
         // de cart fitra en un arreglo los id
         $productIds = array_column($cart, 'productId');
@@ -126,6 +127,7 @@ class SaleController extends Controller
                 $totalAmount = $sumAmountEntry - $sumAmountExit - $balanceSale;
 
                 $kardex = [];
+                $kardex['created_at'] = $request->created_at;
                 $kardex['product_id'] = $item['productId'];
                 $kardex['operation_date'] = $detail->created_at;
                 $kardex['detail'] = 'Venta';

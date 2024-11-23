@@ -46,7 +46,8 @@
                             <tbody>
                                 @foreach ($kardex as $k)
                                     <tr>
-                                        <td>{{ $k->created_at }}</td>
+                                        {{-- Only date --}}
+                                        <td>{{ $k->created_at->format('d/m/Y') }}</td>
                                         <td>{{ $k->detail }}</td>
                                         <td>{{ $k->product_entry }}</td>
                                         <td>{{ $k->product_exit }}</td>
