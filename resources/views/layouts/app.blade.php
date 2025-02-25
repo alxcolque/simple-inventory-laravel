@@ -82,7 +82,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="cartModalLabel">Carrito de compras</h5>
+                    <h5 class="modal-title" id="cartModalLabel">Carrito</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -145,7 +145,7 @@
 
                     <button type="button" class="btn btn-danger" onclick="clearLocalStorage();">Limpiar</button>
 
-                    <button type="button" id="payButton" class="btn btn-primary">Pagar</button>
+                    <button type="button" id="payButton" class="btn btn-primary">Cobrar</button>
                 </div>
             </div>
         </div>

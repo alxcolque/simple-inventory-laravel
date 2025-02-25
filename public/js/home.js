@@ -4,7 +4,7 @@
 // Al pagar el carrito, se debe limpiar el carrito y mostrar un mensaje de éxito.
 // Obtén una referencia al botón "Agregar al carrito"
 function addToCart(purchaseId, productId, name, image, price, stock, quantity, unit, iva) {
-
+    console.log(price);
     if (stock <= 0) {
         alert('Producto sin stock');
         //Toast.create("Error", 'Producto sin stock', TOAST_STATUS.SUCCESS, 5000);
@@ -67,6 +67,7 @@ function showCart() {
     let tbody = document.getElementById('cart-items');
     var amountIva = 0;
     tbody.innerHTML = '';
+
     cart.forEach(product => {
         if (product.iva) {
             amountIva += product.price * 0.13;
@@ -90,6 +91,7 @@ function showCart() {
     document.getElementById('totalIva').textContent = (amountIva).toFixed(2);
     //Calcula el total
     let total = cart.reduce((acc, p) => acc + p.price * p.quantity, 0);
+
 
     localStorage.setItem('total', total);
     localStorage.setItem('amountIva', amountIva);

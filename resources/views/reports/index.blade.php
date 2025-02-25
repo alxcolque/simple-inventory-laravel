@@ -25,21 +25,15 @@
                                 </form>
                             </div>
                             <div class="col-md-8 text-end mb-2">
-                                <!-- Agrega un input de select para filtrar por dia semana mes y año -->
-
-                                <select class="me-2" id="filter" name="filter"
-                                    onchange="window.location.href = this.value">
-                                    <option value="">-- Filtrar por: --</option>
-                                    <option value="{{ route('products.index') }}">Todos</option>
-                                    {{-- <option value="{{ route('products.index', ['filter' => 'day']) }}"
-                                        {{ $filter == 'day' ? 'selected' : '' }}>Hoy</option>
-                                    <option value="{{ route('products.index', ['filter' => 'week']) }}"
-                                        {{ $filter == 'week' ? 'selected' : '' }}>Esta semana</option>
-                                    <option value="{{ route('products.index', ['filter' => 'month']) }}"
-                                        {{ $filter == 'month' ? 'selected' : '' }}>Este mes</option>
-                                    <option value="{{ route('sales.index', ['filter' => 'year']) }}"
-                                        {{ $filter == 'year' ? 'selected' : '' }}>Este año</option> --}}
-                                </select>
+                                {{-- Botones: Mas vendidos y menos vendidos --}}
+                                <a href="" class="btn btn-success">
+                                    <i class="mdi mdi-chart-bar" style="font-size: 1.5rem"></i>
+                                    Mas vendidos
+                                </a >
+                                <a href="" class="btn btn-danger">
+                                    <i class="mdi mdi-chart-bar" style="font-size: 1.5rem"></i>
+                                    Menos vendidos
+                                </a>
                                 <button type="button" onclick="window.print()" class="btn btn-dark btn-rounded btn-icon">
                                     <i class="mdi mdi-printer" style="font-size: 1.5rem"></i>
                                 </button>
@@ -47,31 +41,24 @@
                                     <i class="mdi mdi-file-excel" style="font-size: 1.5rem; color:black"></i>
                                 </button>
                             </div>
+                            </div>
                         </div>
                         @endif
                         <div class="table-responsive">
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th>No.</th>
-                                        <th>Fecha</th>
-                                        <th>Cliente</th>
-                                        <th>Total</th>
-                                        <th class="no-print">Acciones</th>
+                                        <th>Código</th>
+                                        <th>Producto</th>
+                                        <th>Unidades vendidas</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($products as $product)
                                         <tr>
-                                            <td>{{ $product->id }}</td>
-                                            <td>{{ $product->created_at }}</td>
+                                            <td>{{ $product->code }}</td>
                                             <td>{{ $product->name }}</td>
-                                            <td>{{ $product->price }}</td>
-                                            <td class="no-print">
-                                                <a href="{{ route('products.show', $product) }}"
-                                                    class="btn btn-sm btn-primary"><i class="mdi mdi-eye"></i> </a>
-
-                                            </td>
+                                            <td>{{ $product->total }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -100,7 +87,7 @@
 @section('js')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
     <script>
-        document.getElementById('filter').addEventListener('change', function() {
+        /* document.getElementById('filter').addEventListener('change', function() {
             window.location.href = this.value;
             fetch(this.value)
                 .then(response => response.text())
@@ -109,7 +96,7 @@
                 });
             window.history.pushState(null, '', this.value);
             history.replaceState(null, null, this.value);
-        });
+        }); */
         document.querySelector('.btn-excel').addEventListener('click', function() {
 
             var wb = XLSX.utils.table_to_book(document.querySelector('table'), {
@@ -122,7 +109,7 @@
                 type: 'base64'
             });
             var fileName = new Date().toISOString().slice(0, 19).replace(/:/g, '-') + ".xlsx";
-            XLSX.writeFile(wb, 'compra_' + fileName);
+            XLSX.writeFile(wb, 'Reporte_ventas_' + fileName);
         });
     </script>
 @endsection

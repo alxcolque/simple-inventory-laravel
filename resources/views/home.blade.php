@@ -392,8 +392,9 @@
                 } else {
                     iva = false;
                 }
-                var priceWithRevenue = productPrice * parseInt(revenue) / 100;
-                var priceTotal = parseInt(productPrice) + priceWithRevenue
+                var priceWithRevenue = parseFloat(productPrice) * parseFloat(revenue) / 100;
+                //Parse float
+                var priceTotal = parseFloat(productPrice) + parseFloat(priceWithRevenue)
                 if (iva) {
                     priceTotal = priceTotal * 1.13;
                 }

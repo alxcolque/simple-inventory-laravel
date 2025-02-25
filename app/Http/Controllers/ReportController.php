@@ -10,7 +10,13 @@ class ReportController extends Controller
     public function index(Request $request)
     {
         $search = $request->get('search');
-        $products = Product::where('name', 'like', '%'.$search.'%')->paginate(10);
+        $products = Product::selectRaw('products.*, SUM(details.qty) as total')
+                            ->join('details', 'products.id', 'details.product_id')
+                            ->groupBy('products.id')
+                            ->orderBy('total', 'desc')
+                            ->paginate(10);
+
+
         return view('reports.index', compact('products', 'search'));
     }
 }
