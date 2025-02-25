@@ -12,7 +12,7 @@ class ReportController extends Controller
         $search = $request->get('search');
         $products = Product::selectRaw('products.*, SUM(details.qty) as total')
                             ->join('details', 'products.id', 'details.product_id')
-                            ->groupBy('products.id')
+                            ->groupBy('products.id', 'products.category_id')
                             ->orderBy('total', 'desc')
                             ->paginate(10);
 
