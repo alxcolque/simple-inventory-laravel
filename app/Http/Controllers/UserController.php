@@ -16,7 +16,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $search = $request->get('search');
-        $users = User::where('name', 'like', '%'.$search.'%')->paginate(10);
+        $users = User::where('name', 'like', '%'.$search.'%')->orderBy('name')->paginate(10);
         return view('users.index', compact('users','search'));
     }
 
@@ -104,7 +104,7 @@ class UserController extends Controller
     // muestra el perfil del usuario autenticado
     public function profile()
     {
-        $user = auth()->user();
+        $user = auth()->Auth::user();
         return view('users.profile', compact('user'));
     }
 }

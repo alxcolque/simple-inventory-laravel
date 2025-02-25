@@ -52,9 +52,12 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        @php
+                                            $i = 1;
+                                        @endphp
                                         @foreach ($products as $product)
                                             <tr>
-                                                <td>{{ $product->id }}</td>
+                                                <td>{{ $i++ }}</td>
                                                 <td>
                                                     <img src="{{ $product->image? $product->image : 'https://e7.pngegg.com/pngimages/854/638/png-clipart-computer-icons-preview-batch-miscellaneous-angle-thumbnail.png' }}" alt="{{ $product->name }}" class="" width="100">
                                                 </td>

@@ -6,6 +6,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KardexController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
@@ -37,6 +38,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/sales-graph/{value}', [HomeController::class, 'getSalesGraph']);
     Route::resource('clients', ClientController::class)->names('clients');
     Route::resource('sales', SaleController::class)->names('sales');
+    Route::get('reports', [ReportController::class, 'index'])->name('reports.index');
     Route::resource('purchases', PurchaseController::class)->names('purchases');
     Route::post('/purchases/return-to-supplier', [PurchaseController::class, 'returnToSupplier'])->name('return-to-supplier');
     Route::post('/purchases/return-from-client', [PurchaseController::class, 'returnFromClient'])->name('return-from-client');

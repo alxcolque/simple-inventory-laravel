@@ -32,9 +32,12 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @php
+                                        $i = 1;
+                                    @endphp
                                     @foreach ($categories as $category)
                                         <tr>
-                                            <td>{{ $category->id }}</td>
+                                            <td>{{ $i++ }}</td>
                                             <td>{{ $category->title }}</td>
                                             <td><i class="{{ $category->icon }}" style="color: {{ $category->color }}"></i></td>
                                             <td>

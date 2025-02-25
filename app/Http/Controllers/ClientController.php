@@ -11,7 +11,7 @@ class ClientController extends Controller
     public function index(Request $request)
     {
         $search = $request->get('search');
-        $clients = Client::where('name', 'like', '%'.$search.'%')->paginate(10);
+        $clients = Client::where('name', 'like', '%'.$search.'%')->orderBy('name')->paginate(10);
         return view('clients.index', compact('clients','search'));
     }
 
@@ -40,7 +40,7 @@ class ClientController extends Controller
         return view('clients.edit', compact('client'));
     }
 
-    public function update(ClientRequest $request, $id)
+    public function update(Request $request, $id)
     {
         $client = Client::find($id);
         $client->update($request->all());

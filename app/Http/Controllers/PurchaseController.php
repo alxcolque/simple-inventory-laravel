@@ -58,7 +58,8 @@ class PurchaseController extends Controller
 
     public function create()
     {
-        $products = Product::all();
+        //ordenar alfabeticamente los productos
+        $products = Product::orderBy('name')->get();
         $suppliers = Supplier::all();
         return view('purchases.create', compact('products','suppliers'));
     }

@@ -19,7 +19,7 @@ class ProductController extends Controller
             $products = Product::where('category_id', $request->get('category'))->paginate(10);
         }else{
 
-            $products = Product::where('name', 'like', '%'.$search.'%')->paginate(10);
+            $products = Product::where('name', 'like', '%'.$search.'%')->orderBy('name')->paginate(10);
         }
         // Filtra todas las categorias de la realcion de productos y las guarda en la variable $categories
         $categories = Product::all()->pluck('category')->unique();
@@ -78,7 +78,7 @@ class ProductController extends Controller
         return view('products.edit', compact('product','categories','code'));
     }
 
-    public function update(ProductRequest $request, $id)
+    public function update(Request $request, $id)
     {
         $product = Product::find($id);
         $product->name = $request->name;

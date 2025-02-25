@@ -11,7 +11,7 @@ class CategoryController extends Controller
     public function index(Request $request)
     {
         $search = $request->search;
-        $categories = Category::where('title', 'LIKE', '%'. $search . '%')->latest('id')->paginate(10);
+        $categories = Category::where('title', 'LIKE', '%'. $search . '%')->orderBy('title')->paginate(10);
         return view('categories.index', compact('categories', 'search'));
     }
 

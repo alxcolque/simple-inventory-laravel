@@ -11,7 +11,7 @@ class SupplierController extends Controller
     public function index(Request $request)
     {
         $search = $request->get('search');
-        $suppliers = Supplier::where('full_name', 'like', '%'.$search.'%')->paginate(10);
+        $suppliers = Supplier::where('full_name', 'like', '%'.$search.'%')->orderBy('full_name')->paginate(10);
         return view('suppliers.index', compact('suppliers','search'));
     }
 
@@ -32,7 +32,7 @@ class SupplierController extends Controller
         return view('suppliers.edit', compact('supplier'));
     }
 
-    public function update(SupplierRequest $request, $id)
+    public function update(Request $request, $id)
     {
         $supplier = Supplier::find($id);
         $supplier->update($request->all());
