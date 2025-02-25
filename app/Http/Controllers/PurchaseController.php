@@ -123,7 +123,7 @@ class PurchaseController extends Controller
         return view('purchases.edit', compact('purchase','suppliers','products'));
     }
 
-    public function update(PurchaseRequest $request, $id)
+    public function update(Request $request, $id)
     {
         $purchase = Purchase::find($id);
         $purchase->supplier_id = $request->supplier_id;

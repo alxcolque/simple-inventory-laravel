@@ -38,15 +38,17 @@
     <div class="col-md-3 form-group">
         <label for="expiration_date" class="col-form-label">Fecha de expiración</label>
         <div class="col-sm-9">
-            <input type="date" class="form-control" id="expiration_date" name="expiration_date" placeholder="Fecha de expiración" value="{{ old('expiration_date', $purchase->expiration_date ?? '') }}">
+            <input type="date" class="form-control" id="expiration_date" name="expiration_date"
+                placeholder="Fecha de expiración"
+                value="{{ old('expiration_date', $purchase->expiration_date ?? '') }}">
         </div>
     </div>
     <!-- campo cantidad -->
     <div class="col-md-3 form-group">
         <label for="qty" class="col-form-label">Cantidad <span class="text-danger">*</span></label>
         <div class="col-sm-9">
-            <input type="decimal" min="0" class="form-control" id="qty" name="qty" placeholder="Cantidad"
-                value="{{ old('qty', $purchase->qty ?? '1') }}">
+            <input type="decimal" min="0" class="form-control" id="qty" name="qty"
+                placeholder="Cantidad" value="{{ old('qty', $purchase->qty ?? '1') }}">
             @error('qty')
                 <small class="text-danger">{{ $message }}</small>
             @enderror
@@ -60,15 +62,17 @@
         <label for="iva" class="col-form-label">Marca si es con IVA</label>
         <div class="col-sm-12">
             {{-- Añadir un checkbox para el campo iva --}}
-            <input type="checkbox" class="form-check-input" id="iva" name="iva" placeholder="IVA" value="{{ old('iva', $purchase->iva ?? '0') }}" {{ old('iva', $purchase->iva ?? '0') ? 'checked' : 'checked' }}>
+            <input type="checkbox" class="form-check-input" id="iva" name="iva" placeholder="IVA"
+                value="{{ old('iva', $purchase->iva ?? '0') }}"
+                {{ old('iva', $purchase->iva ?? '0') ? 'checked' : 'checked' }}>
         </div>
     </div>
     <!-- campo precio de compra -->
     <div class="col-md-3 form-group row">
         <label for="price" class="col-form-label">Precio de compra <span class="text-danger">*</span></label>
         <div class="col-sm-12">
-            <input type="decimal" min="0" class="form-control" id="price" name="price" placeholder="Precio de compra"
-                value="{{ old('price', $purchase->price ?? '0') }}">
+            <input type="decimal" min="0" class="form-control" id="price" name="price"
+                placeholder="Precio de compra" value="{{ old('price', $purchase->price ?? '0') }}">
             @error('price')
                 <small class="text-danger">{{ $message }}</small>
             @enderror
@@ -78,16 +82,27 @@
     <div class="col-md-3 form-group row">
         <label for="created_at" class="col-form-label">Fecha de creación</label>
         <div class="col-sm-12">
-            <input type="date" class="form-control" id="created_at" name="created_at" placeholder="Fecha de creación" value="{{ old('created_at', $purchase->created_at ?? '') }}">
+            @isset($purchase)
+                @php
+                    //Only date
+                    $dateCreated = date('Y-m-d', strtotime($purchase->created_at));
+                @endphp
+            @else
+                @php
+                    $dateCreated = '';
+                @endphp
+            @endisset
+            <input type="date" class="form-control" id="created_at" name="created_at" placeholder="Fecha de creación"
+                value="{{ old('created_at', $dateCreated ?? '') }}">
         </div>
     </div>
     <!-- campo price_sale -->
     <div class="col-md-3 form-group row" hidden>
         <label for="price_sale" class="col-form-label">Precio de venta en (%) <span class="text-danger">*</span></label>
         <div class="col-sm-12">
-            <input type="decimal" min="0" class="form-control" id="price_sale" name="price_sale" placeholder="Precio de venta (%)"
-                value="{{ old('price_sale', isset($purchase)? $purchase->price + $purchase->revenue: '0') }}"
-            >
+            <input type="decimal" min="0" class="form-control" id="price_sale" name="price_sale"
+                placeholder="Precio de venta (%)"
+                value="{{ old('price_sale', isset($purchase) ? $purchase->price + $purchase->revenue : '0') }}">
             @error('price_sale')
                 <small class="text-danger">{{ $message }}</small>
             @enderror
@@ -128,6 +143,7 @@
 <div class="form-group row">
     <label for="comment" class="col-sm-3 col-form-label">Comentario de la compra (Opcional)</label>
     <div class="col-sm-9">
-        <input type="text" class="form-control" id="comment" name="comment" placeholder="Comentario" value="{{ old('comment', $purchase->comment ?? '') }}">
+        <input type="text" class="form-control" id="comment" name="comment" placeholder="Comentario"
+            value="{{ old('comment', $purchase->comment ?? '') }}">
     </div>
 </div>

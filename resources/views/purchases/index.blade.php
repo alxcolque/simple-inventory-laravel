@@ -23,7 +23,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <h6 class="text-muted font-weight-normal">TOTAL COMPRAS</h6>
+                                <h6 class="text-muted font-weight-normal">TOTAL COMPRAS INICIAL</h6>
 
                             </div>
                             <div class="card col-md-4 mb-4">
@@ -112,9 +112,10 @@
                                         <th>Imagen</th>
                                         <th>Nombre</th>
                                         <th>Cantidad</th>
-                                        <th>Precio</th>
-                                        <th>Stock</th>
-                                        <th>Subtotal</th>
+                                        <th>Precio (Bs)</th>
+                                        <th>Subtotal (Bs)</th>
+                                        <th>Stock Cantidad</th>
+                                        <th>Stock Subtotal (Bs)</th>
                                         <th>F-Ven</th>
                                         <th class="no-print">Acciones</th>
                                     </tr>
@@ -135,8 +136,9 @@
                                             </td>
                                             <td>{{ $purchase->qty }}</td>
                                             <td>{{ $purchase->price }}</td>
-                                            <td>{{ $purchase->stock }}</td>
                                             <td>{{ number_format($purchase->balance, 2, '.', ',') }}</td>
+                                            <td>{{ $purchase->stock }}</td>
+                                            <td>{{ number_format($purchase->stock * $purchase->price, 2, '.', ',') }}</td>
                                             <td>{{ $purchase->expiration_date }}</td>
                                             <td class="no-print">
                                                 <a href="{{ route('purchases.show', $purchase) }}"

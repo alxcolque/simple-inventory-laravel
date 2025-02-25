@@ -71,7 +71,7 @@
                         <div class="row mt-3 no-print">
                             <div class="col-md-12">
                                 <a href="{{ route('sales.index') }}" class="btn btn-sm btn-dark"> <i
-                                        class="mdi mdi-arrow-left"></i>Cancelar</a>
+                                        class="mdi mdi-arrow-left"></i>Atrás</a>
                                 <button class="btn btn-primary btn-sm" onclick="window.print()"><i
                                         class="mdi mdi-printer"></i> Imprimir</button>
                                 {{-- boton inicio --}}

@@ -78,13 +78,12 @@ class HomeController extends Controller
         // calcula total en stock sin vender
         $total_stock = 0;
 
-        foreach($purchases as $purchase){
+        foreach($allPurchases as $purchase){
             $total_compras += $purchase->price * $purchase->qty;
-            $total_beneficio += $purchase->revenue * $purchase->qty;
-            if($purchase->stock > 0){
-                $total_stock += $purchase->revenue * $purchase->stock;
-            }
+            $total_stock += $purchase->stock * $purchase->price;
         }
+        $total_beneficio = $total_compras - $total_ventas - $total_stock;
+
         $clients = Client::all();
         return view('home', compact('purchases', 'search', 'categories', 'filter','total_compras','total_beneficio','total_ventas','clients','total_stock','categories_sales'));
     }

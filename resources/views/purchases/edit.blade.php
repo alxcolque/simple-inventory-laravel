@@ -23,7 +23,7 @@
                             @include('purchases.fields')
 
                             <button type="submit" class="btn btn-primary me-2">Actualizar</button>
-                            <a href="{{ route('purchases.index') }}" class="btn btn-dark">Cancelar</a>
+                            <a href="{{ route('purchases.index') }}" class="btn btn-dark">Atrás</a>
                         </form>
                     </div>
                 </div>

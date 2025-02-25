@@ -60,7 +60,7 @@
                                     <button type="submit" class="btn btn-sm btn-danger"><i class="mdi mdi-delete-forever"></i>Eliminar</button>
                                 </form>
                                 @endif
-                                <a href="{{ route('purchases.index') }}" class="btn btn-dark btn-sm"> <i class="mdi mdi-arrow-left"></i>Cancelar</a>
+                                <a href="{{ route('purchases.index') }}" class="btn btn-dark btn-sm"> <i class="mdi mdi-arrow-left"></i>Atrás</a>
                             </div>
                         </div>
                     </div>
