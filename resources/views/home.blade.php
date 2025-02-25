@@ -144,7 +144,7 @@
                                     <tr>
                                         <th> Código </th>
                                         <th> Producto </th>
-                                        <th> Categoría </th>
+                                        <th> Compra </th>
                                         <th> Stock </th>
                                         <th> Precio </th>
                                         <th class="no-print"> Acciones </th>
@@ -154,12 +154,17 @@
                                     @foreach ($purchases as $purchase)
                                         <tr>
                                             <td> {{ $purchase->product->code }} </td>
-                                            <td>
+                                            <td class="d-flex align-items-center">
                                                 <img
+                                                class="img-thumbnail"
                                                     src="{{ $purchase->product->image ? $purchase->product->image : 'https://e7.pngegg.com/pngimages/854/638/png-clipart-computer-icons-preview-batch-miscellaneous-angle-thumbnail.png' }}" />
-                                                <span class="ps-2">{{ $purchase->product->name }}</span>
+                                                <div class="d-flex flex-column ps-2">
+                                                    <span class="fw-bold">{{ $purchase->product->name }}</span>
+                                                    <span class="text-warning">({{ $purchase->product->category->title }})</span>
+
+                                                </div>
                                             </td>
-                                            <td> {{ $purchase->product->category->title }} </td>
+                                            <td> {{ $purchase->qty }} </td>
                                             <td> {{ $purchase->stock }} </td>
                                             <td> {{ $purchase->price }} </td>
                                             <td class="no-print">
@@ -399,7 +404,8 @@
                     priceTotal = priceTotal * 1.13;
                 }
 
-                addToCart(purchaseId, productId2, productName, productImage, priceTotal, productStock, quantity, unit, iva);
+                addToCart(purchaseId, productId2, productName, productImage, priceTotal, productStock, quantity,
+                    unit, iva);
                 $('#addCartQuantityModal').modal('hide');
             }
 

@@ -141,11 +141,11 @@
                 </div>
                 <div class="modal-footer">
                     <!-- Boton cancelar --->
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Atrás</button>
 
                     <button type="button" class="btn btn-danger" onclick="clearLocalStorage();">Limpiar</button>
 
-                    <button type="button" id="payButton" class="btn btn-primary">Cobrar</button>
+                    <button type="button" id="payButton" class="btn btn-primary">Realizar Venta</button>
                 </div>
             </div>
         </div>

@@ -55,7 +55,8 @@ class HomeController extends Controller
                     $purchases = Purchase::where('stock', '>', 0)->paginate(10);
                 }
             }else{
-                $purchases = Purchase::where('stock', '>', 0)->paginate(10);
+                // Ordena las compras por nombre de producto de forma descendente
+                $purchases = Purchase::join('products', 'products.id', '=', 'purchases.product_id')->where('stock', '>', 0)->orderBy('products.name')->paginate(10);
             }
         }
         $allPurchases = Purchase::all();

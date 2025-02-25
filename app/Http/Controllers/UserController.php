@@ -104,7 +104,7 @@ class UserController extends Controller
     // muestra el perfil del usuario autenticado
     public function profile()
     {
-        $user = auth()->Auth::user();
+        $user = auth()->user();
         return view('users.profile', compact('user'));
     }
 }
