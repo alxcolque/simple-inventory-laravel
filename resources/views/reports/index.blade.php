@@ -5,7 +5,7 @@
     <div class="content-wrapper">
         <div class="card">
             <div class="card-body">
-                <h2>Reportes</h2>
+                <h2>Reporte de ventas por producto</h2>
                 @if ($products->isEmpty())
                     <div class="alert alert-warning">
                         No hay ventas registrados.
